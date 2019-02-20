@@ -29,7 +29,7 @@ public enum SubjectColumn {
   HYPERCHOLESTEROLEMIA(Constants.YESNO_PATTERN, false, false),
   SMOKER_CURRENT(Constants.YESNO_PATTERN, false, false),
   SMOKER_FORMER(Constants.YESNO_PATTERN, false, false),
-  SMOKER_YEARS("^\\d+$", false, true),
+  SMOKER_YEARS("^(\\d+|NA)$", false, true),
   ALCOHOL("^[01234]$", false, false),
   INDICATION_CAD(Constants.CHECKED_PATTERN, true, false),
   INDICATION_PAD(Constants.CHECKED_PATTERN, true, false),

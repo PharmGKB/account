@@ -1,10 +1,12 @@
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -50,7 +52,7 @@ public class App {
         .skip(2)
         .map(r -> {
           String id = r.get(SubjectColumn.SUBJECT_ID);
-          return Stream.of(SubjectColumn.values())
+          int fieldLevelErrorCount = Stream.of(SubjectColumn.values())
               .map(c -> {
                 try {
                   if (!c.validate(r.get(c))) {
@@ -65,6 +67,22 @@ public class App {
                 }
               })
               .mapToInt(i -> i).sum();
+          
+          int rowLevelError = 0;
+          
+          String currSmoker = r.get(SubjectColumn.SMOKER_CURRENT);
+          String prevSmoker = r.get(SubjectColumn.SMOKER_FORMER);
+          String timeSmoker = r.get(SubjectColumn.SMOKER_YEARS);
+          if ((Objects.equals(prevSmoker, "Y") || Objects.equals(currSmoker, "Y")) && Strings.isNullOrEmpty(timeSmoker)) {
+            rowLevelError++;
+            System.out.println(String.format("%s marked as smoker but no time smoking", id));
+          }
+          if (Objects.equals(prevSmoker, "N") && Objects.equals(currSmoker, "N") && !timeSmoker.equals("NA")) {
+            rowLevelError++;
+            System.out.println(String.format("%s marked not a smoker but not 'NA' for %s", id, SubjectColumn.SMOKER_YEARS.name()));
+          }
+          
+          return fieldLevelErrorCount + rowLevelError;
         }).mapToInt(i -> i).sum();
     System.out.println("Completed validation");
     if (errors > 0) {
