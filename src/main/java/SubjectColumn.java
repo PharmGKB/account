@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public enum SubjectColumn {
   
   SUBJECT_ID("^PA\\d+$", true, false),
-  SITE("^(NU|UIC|UofC|DCVA|GWU)$", true, false),
+  SITE("^[12345]$", true, false),
   GENDER("^[MF]$", true, false),
   DOB(Constants.DATE_PATTERN, true, false),
   ENROLLMENT(Constants.DATE_PATTERN, true, false),
