@@ -1,3 +1,5 @@
+package org.pharmgkb.account;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
@@ -88,11 +90,11 @@ public class FieldAnalysis {
     }
 
     System.out.println("-- " + file.getFileName().toString());
-    System.out.println("new Field[]{");
+    System.out.println("new org.pharmgkb.account.Field[]{");
     for (String line : fields) {
       String field = StringUtils.strip(line);
       String enumName = makeEnumName(field);
-      System.out.println("Field." + enumName + ",");
+      System.out.println("org.pharmgkb.account.Field." + enumName + ",");
 
       fieldLocationMap.put(field, title+group);
 

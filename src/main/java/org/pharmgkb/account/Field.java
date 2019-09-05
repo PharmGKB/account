@@ -1,3 +1,5 @@
+package org.pharmgkb.account;
+
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;

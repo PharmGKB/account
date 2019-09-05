@@ -1,3 +1,5 @@
+package org.pharmgkb.account;
+
 /**
  * A collection of RegEx Pattern strings that can be used to validate CSV fields 
  *

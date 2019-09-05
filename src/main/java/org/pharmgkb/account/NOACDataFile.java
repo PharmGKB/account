@@ -1,3 +1,5 @@
+package org.pharmgkb.account;
+
 import java.nio.file.Path;
 
 /**

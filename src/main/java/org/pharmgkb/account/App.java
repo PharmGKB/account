@@ -1,3 +1,5 @@
+package org.pharmgkb.account;
+
 import com.google.common.base.Preconditions;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -11,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This App validates CSV data files from the account consortium
+ * This org.pharmgkb.account.App validates CSV data files from the account consortium
  * 
  * @author Ryan Whaley
  */
