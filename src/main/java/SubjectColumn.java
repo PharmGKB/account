@@ -15,33 +15,33 @@ public enum SubjectColumn {
   SUBJECT_ID("^PA\\d+$", true, false),
   SITE("^[12345]$", true, false),
   GENDER("^[MF]$", true, false),
-  DOB(Constants.DATE_PATTERN, true, false),
-  ENROLLMENT(Constants.DATE_PATTERN, true, false),
+  DOB(FieldPattern.DATE, true, false),
+  ENROLLMENT(FieldPattern.DATE, true, false),
   AGE("^\\d+$", true, false),
-  HEIGHT(Constants.DECIMAL_PATTERN, true, false),
-  WEIGHT(Constants.DECIMAL_PATTERN, true, false),
-  BMI(Constants.DECIMAL_PATTERN, true, false),
-  NOTES(Constants.ANY_PATTERN, false, true),
-  COMORBIDITIES(Constants.ANY_PATTERN, true, false),
+  HEIGHT(FieldPattern.DECIMAL, true, false),
+  WEIGHT(FieldPattern.DECIMAL, true, false),
+  BMI(FieldPattern.DECIMAL, true, false),
+  NOTES(FieldPattern.ANY, false, true),
+  COMORBIDITIES(FieldPattern.ANY, true, false),
   DIABETES("^[012]$", false, false),
-  CHF(Constants.YESNO_PATTERN, false, false),
-  HYPERTENSION(Constants.YESNO_PATTERN, false, false),
-  HYPERCHOLESTEROLEMIA(Constants.YESNO_PATTERN, false, false),
-  SMOKER_CURRENT(Constants.YESNO_PATTERN, false, false),
-  SMOKER_FORMER(Constants.YESNO_PATTERN, false, false),
+  CHF(FieldPattern.YESNO, false, false),
+  HYPERTENSION(FieldPattern.YESNO, false, false),
+  HYPERCHOLESTEROLEMIA(FieldPattern.YESNO, false, false),
+  SMOKER_CURRENT(FieldPattern.YESNO, false, false),
+  SMOKER_FORMER(FieldPattern.YESNO, false, false),
   SMOKER_YEARS("^(\\d+|NA)$", false, true),
   ALCOHOL("^[01234]$", false, false),
-  INDICATION_CAD(Constants.CHECKED_PATTERN, true, false),
-  INDICATION_PAD(Constants.CHECKED_PATTERN, true, false),
-  INDICATION_IS(Constants.CHECKED_PATTERN, true, false),
-  INDICATION_ACS(Constants.CHECKED_PATTERN, true, false),
-  INDICATION_OTHER(Constants.CHECKED_PATTERN, true, false),
+  INDICATION_CAD(FieldPattern.CHECKED, true, false),
+  INDICATION_PAD(FieldPattern.CHECKED, true, false),
+  INDICATION_IS(FieldPattern.CHECKED, true, false),
+  INDICATION_ACS(FieldPattern.CHECKED, true, false),
+  INDICATION_OTHER(FieldPattern.CHECKED, true, false),
   INDICATION_FOR_PCI("^[1234]$", false, true),
-  PRIOR_PCI(Constants.YESNONA_PATTERN, false, false),
-  CARDIOGENIC_SHOCK(Constants.YESNONA_PATTERN, false, false),
-  PRIOR_MI(Constants.YESNONA_PATTERN, false, false),
-  PRIOR_CABG(Constants.YESNONA_PATTERN, false, false),
-  PRIOR_ANGIOPLASTY(Constants.YESNONA_PATTERN, false, false),
+  PRIOR_PCI(FieldPattern.YESNONA, false, false),
+  CARDIOGENIC_SHOCK(FieldPattern.YESNONA, false, false),
+  PRIOR_MI(FieldPattern.YESNONA, false, false),
+  PRIOR_CABG(FieldPattern.YESNONA, false, false),
+  PRIOR_ANGIOPLASTY(FieldPattern.YESNONA, false, false),
   VESSEL_DISEASE("^[1234]$", false, false),
   COMPLETE("^(Complete|Incomplete)$", false, false),
   ADP_STIM_AGG_PRU("^(\\d+|NA)$", false, false),
@@ -63,7 +63,7 @@ public enum SubjectColumn {
     }
     Preconditions.checkNotNull(value);
     Preconditions.checkArgument(!Strings.isNullOrEmpty(value.trim()), "value is blank");
-    if (value.equals(Constants.MISSING_DATA) && !m_required) {
+    if (value.equals(FieldPattern.MISSING_DATA) && !m_required) {
       return true;
     }
     return m_validationPattern.matcher(value).matches();
@@ -72,14 +72,4 @@ public enum SubjectColumn {
   boolean isRequired() {
     return m_required;
   }
-}
-
-class Constants {
-  static final String DATE_PATTERN = "^\\d{1,2}\\/\\d{1,2}\\/\\d{2}$";
-  static final String ANY_PATTERN = "^.*$";
-  static final String YESNO_PATTERN = "^[YN]$";
-  static final String YESNONA_PATTERN = "^([YN]|NA)$";
-  static final String CHECKED_PATTERN = "^(Checked|Unchecked)$";
-  static final String DECIMAL_PATTERN = "^\\d+(\\.\\d+)?$";
-  static final String MISSING_DATA = "MD";
 }
