@@ -17,7 +17,7 @@ plugins {
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
-version = '0.1.0'
+version = '0.2.0'
 
 // Define the main class for the application
 mainClassName = 'App'
@@ -25,8 +25,9 @@ mainClassName = 'App'
 dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     compile 'com.google.guava:guava:23.0'
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     compile 'org.apache.commons:commons-csv:1.6'
-    // https://mvnrepository.com/artifact/com.google.guava/guava
     compile group: 'com.google.guava', name: 'guava', version: '27.0.1-jre'
 
     // Use JUnit test framework
