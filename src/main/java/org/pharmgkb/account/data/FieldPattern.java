@@ -1,4 +1,4 @@
-package org.pharmgkb.account;
+package org.pharmgkb.account.data;
 
 /**
  * A collection of RegEx Pattern strings that can be used to validate CSV fields 

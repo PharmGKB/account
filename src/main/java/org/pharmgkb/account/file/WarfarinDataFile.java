@@ -1,4 +1,6 @@
-package org.pharmgkb.account;
+package org.pharmgkb.account.file;
+
+import org.pharmgkb.account.data.Field;
 
 import java.nio.file.Path;
 

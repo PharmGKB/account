@@ -5,6 +5,10 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
+import org.pharmgkb.account.file.AbstractDataFile;
+import org.pharmgkb.account.file.ClopidogrelDataFile;
+import org.pharmgkb.account.file.NOACDataFile;
+import org.pharmgkb.account.file.WarfarinDataFile;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -13,11 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This org.pharmgkb.account.App validates CSV data files from the account consortium
+ * This App validates CSV data files from the account consortium
  * 
  * @author Ryan Whaley
  */
-public class App {
+class App {
 
   private List<AbstractDataFile> dataFiles = new ArrayList<>();
 

@@ -90,11 +90,11 @@ public class FieldAnalysis {
     }
 
     System.out.println("-- " + file.getFileName().toString());
-    System.out.println("new org.pharmgkb.account.Field[]{");
+    System.out.println("new org.pharmgkb.account.data.Field[]{");
     for (String line : fields) {
       String field = StringUtils.strip(line);
       String enumName = makeEnumName(field);
-      System.out.println("org.pharmgkb.account.Field." + enumName + ",");
+      System.out.println("org.pharmgkb.account.data.Field." + enumName + ",");
 
       fieldLocationMap.put(field, title+group);
 

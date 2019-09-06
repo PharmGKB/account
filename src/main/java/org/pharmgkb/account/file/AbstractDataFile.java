@@ -1,7 +1,8 @@
-package org.pharmgkb.account;
+package org.pharmgkb.account.file;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.pharmgkb.account.data.Field;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -17,15 +18,15 @@ import java.util.List;
  */
 public abstract class AbstractDataFile {
   
-  public abstract Field[] getExpectedFields();
+  abstract Field[] getExpectedFields();
 
   private Path filePath;
   
-  public String getFilename() {
+  private String getFilename() {
     return this.filePath.getFileName().toString();
   }
 
-  public void setFilePath(Path filePath) {
+  void setFilePath(Path filePath) {
     this.filePath = filePath;
   }
 
@@ -36,9 +37,7 @@ public abstract class AbstractDataFile {
     int validSubjects = 0;
     int totalSubjects = 0;
 
-    try (
-        Reader reader = new FileReader(this.filePath.toFile());
-    ) {
+    try (Reader reader = new FileReader(this.filePath.toFile())) {
       int lineNumber = 1;
       for (CSVRecord record : CSVFormat.DEFAULT.parse(reader)) {
         if (lineNumber != 1) {

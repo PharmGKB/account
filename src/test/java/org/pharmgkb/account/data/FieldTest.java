@@ -1,4 +1,4 @@
-package org.pharmgkb.account;
+package org.pharmgkb.account.data;
 
 import org.junit.Test;
 
