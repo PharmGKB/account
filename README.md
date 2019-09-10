@@ -2,6 +2,7 @@
 
 These are files produced by ACCOuNT, the _African American Cardiovascular Pharmacogenetics CONsorTium_.
 
+[Tracking validation issues on Trello](https://trello.com/b/wEkfl6PJ/validation-issues)
 
 ## Data File Notes
 
