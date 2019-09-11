@@ -54,7 +54,7 @@ public class ClopidogrelDataFile extends AbstractDataFile {
       Field.NSAIDS,
       Field.NSAIDS_DOSE_MG_DAY,
       Field.PROTON_PUMP_INHIBITORS_PPIS,
-      Field.PROTON_PUMP_INHIBITORS_PPIS,
+      Field.PROTON_PUMP_INHIBITORS_PPIS_NAMES,
       Field.STATINS,
       Field.GPIIB_IIIA,
       Field.WARFARIN,

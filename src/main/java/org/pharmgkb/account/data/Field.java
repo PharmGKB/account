@@ -149,6 +149,7 @@ public enum Field {
   PRIOR_ANGIOPLASTY("Prior angioplasty", FieldPattern.YESNONA), //C1
   PROJECT_SITE("Project site", "^NU|UIC|UofC|DCVA|GWU$"), //C1, N1, W1
   PROTON_PUMP_INHIBITORS_PPIS("Proton Pump Inhibitors (PPIs)", "([YN123456]|MD)"), //C2
+  PROTON_PUMP_INHIBITORS_PPIS_NAMES("Proton Pump Inhibitors (PPIs)", FieldPattern.ANY), //C2
   RED_CELL_COUNT_CELLS_MICROL("Red cell count (cells/microL)", FieldPattern.DECIMAL), //C8
   RED_CELL_COUNT_CELLS_MICROL_ON_PLAVIX("Red cell count (cells/microL) on Plavix", FieldPattern.DECIMAL), //C8
   RIFAMPIN("Rifampin", FieldPattern.YESNONA), //C2
