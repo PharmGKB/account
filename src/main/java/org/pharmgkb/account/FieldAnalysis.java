@@ -12,6 +12,9 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
+import org.pharmgkb.account.file.ClopidogrelDataFile;
+import org.pharmgkb.account.file.NOACDataFile;
+import org.pharmgkb.account.file.WarfarinDataFile;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -88,19 +91,40 @@ public class FieldAnalysis {
       CSVRecord record = csvParser.iterator().next();
       fields.addAll(Lists.newArrayList(record));
     }
+    
+    int expectedColumnCount = 0;
+    switch (title) {
+      case "C":
+        expectedColumnCount = ClopidogrelDataFile.FIELDS.length;
+        break;
+      case "N":
+        expectedColumnCount = NOACDataFile.FIELDS.length;
+        break;
+      case "W":
+        expectedColumnCount = WarfarinDataFile.FIELDS.length;
+        break;
+      default:
+        throw new RuntimeException("Unexpected data file type");
+    }
 
     System.out.println("-- " + file.getFileName().toString());
-    System.out.println("new org.pharmgkb.account.data.Field[]{");
-    for (String line : fields) {
-      String field = StringUtils.strip(line);
-      String enumName = makeEnumName(field);
-      System.out.println("org.pharmgkb.account.data.Field." + enumName + ",");
+    if (fields.size() != expectedColumnCount) {
+      System.out.println("-- WARNING Column count has changed, check the new definition");
+      System.out.println("new org.pharmgkb.account.data.Field[]{");
+      for (String line : fields) {
+        String field = StringUtils.strip(line);
+        String enumName = makeEnumName(field);
+        System.out.println("org.pharmgkb.account.data.Field." + enumName + ",");
 
-      fieldLocationMap.put(field, title+group);
+        fieldLocationMap.put(field, title+group);
 
-      if (field.equals("Complete?")) group += 1;
+        if (field.equals("Complete?")) group += 1;
+      }
+      System.out.println("};");
     }
-    System.out.println("};");
+    else {
+      System.out.println("-- column count constant, keep calm");
+    }
     System.out.println();
   }
 

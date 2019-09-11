@@ -10,7 +10,7 @@ import java.nio.file.Path;
  * @author Ryan Whaley
  */
 public class NOACDataFile extends AbstractDataFile {
-  private static final Field[] FIELDS = new Field[]{
+  public static final Field[] FIELDS = new Field[]{
       Field.STUDY_ID_PHARMGKB_ID,
       Field.PROJECT_SITE,
       Field.GENDER,
