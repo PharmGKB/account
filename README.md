@@ -8,6 +8,8 @@ These are files produced by ACCOuNT, the _African American Cardiovascular Pharma
 
 Fields for each file are split into 8 groups. Each group ends with a "Complete?" field.
 
+Fields with null values or fields with values "unk", "unknown", "n/a", "na", or "md" (case insensitive) will all be normalized to the value "MD" which represents missing data. There is currently no distinction between unevaluated, not applicable data, or assertively blank values. 
+
 ### Clopidogrel Data File
 
 234 columns in 8 groups.
