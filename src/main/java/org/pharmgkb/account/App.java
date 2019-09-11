@@ -5,12 +5,16 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
+import org.pharmgkb.account.data.Field;
 import org.pharmgkb.account.file.AbstractDataFile;
 import org.pharmgkb.account.file.ClopidogrelDataFile;
 import org.pharmgkb.account.file.NOACDataFile;
 import org.pharmgkb.account.file.WarfarinDataFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -22,6 +26,7 @@ import java.util.List;
  * @author Ryan Whaley
  */
 class App {
+  private static final Logger sf_logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private List<AbstractDataFile> dataFiles = new ArrayList<>();
 
@@ -56,9 +61,15 @@ class App {
   }
 
   private void validate() throws IOException {
-    System.out.println("Starting validation");
+    sf_logger.info("Starting validation");
+
+    for (Field field : Field.values()) {
+      if (field.isUnvalidated()) {
+        sf_logger.warn("WARNING: The field \"{}\" will NOT be checked for validation", field.getDisplayName());
+      }
+    }
     for (AbstractDataFile dataFile : this.dataFiles) {
-      dataFile.validate();
+      dataFile.validate().forEach(sf_logger::warn);
     }
   }
 }

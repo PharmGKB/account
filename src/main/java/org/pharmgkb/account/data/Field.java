@@ -212,6 +212,14 @@ public enum Field {
   }
 
   /**
+   * Does this field not have a validation pattern associated with it and is, thus, not check for validity
+   * @return true if this field is not checked for validity
+   */
+  public boolean isUnvalidated() {
+    return this.validationPattern == null;
+  }
+
+  /**
    * Validates the given "value" for this field. This will convert empty values to "MD", the missing data symbol.
    * @param value a string value to check
    * @return true if this value is valid, false if it's invalid

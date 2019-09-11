@@ -15,15 +15,19 @@ import org.apache.commons.lang3.StringUtils;
 import org.pharmgkb.account.file.ClopidogrelDataFile;
 import org.pharmgkb.account.file.NOACDataFile;
 import org.pharmgkb.account.file.WarfarinDataFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.invoke.MethodHandles;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * Analyze all the CSV files' header rows to see what columns exist
@@ -31,6 +35,7 @@ import java.util.List;
  * @author Ryan Whaley
  */
 public class FieldAnalysis {
+  private static final Logger sf_logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
   private Path clopidogrelPath;
   private Path noacPath;
@@ -72,10 +77,11 @@ public class FieldAnalysis {
     gatherFields(this.noacPath, "N");
     gatherFields(this.warfarinPath, "W");
 
+    StringJoiner fieldJoiner = new StringJoiner("\n");
     for (String key : fieldLocationMap.keySet()) {
-      String enumName = makeEnumName(key);
-      System.out.println(enumName + "(\""+key+"\"), //" + String.join(", ", fieldLocationMap.get(key)));
+      fieldJoiner.add(makeEnumName(key) + "(\""+key+"\"), //" + String.join(", ", fieldLocationMap.get(key)));
     }
+    sf_logger.info("Full field list\n{}", fieldJoiner.toString());
   }
   
   private void gatherFields(Path file, String title) throws IOException {
@@ -92,7 +98,7 @@ public class FieldAnalysis {
       fields.addAll(Lists.newArrayList(record));
     }
     
-    int expectedColumnCount = 0;
+    int expectedColumnCount;
     switch (title) {
       case "C":
         expectedColumnCount = ClopidogrelDataFile.FIELDS.length;
@@ -107,25 +113,26 @@ public class FieldAnalysis {
         throw new RuntimeException("Unexpected data file type");
     }
 
-    System.out.println("-- " + file.getFileName().toString());
+    sf_logger.info("validating " + file.getFileName().toString());
     if (fields.size() != expectedColumnCount) {
-      System.out.println("-- WARNING Column count has changed, check the new definition");
-      System.out.println("new org.pharmgkb.account.data.Field[]{");
+      sf_logger.warn("WARNING Column count has changed, check the new definition");
+      StringJoiner fieldJoiner = new StringJoiner("\n");
+      fieldJoiner.add("new org.pharmgkb.account.data.Field[]{");
       for (String line : fields) {
         String field = StringUtils.strip(line);
-        String enumName = makeEnumName(field);
-        System.out.println("org.pharmgkb.account.data.Field." + enumName + ",");
+        fieldJoiner.add("org.pharmgkb.account.data.Field." + makeEnumName(field) + ",");
 
         fieldLocationMap.put(field, title+group);
 
         if (field.equals("Complete?")) group += 1;
       }
-      System.out.println("};");
+      fieldJoiner.add("};");
+      
+      sf_logger.info("fields\n{}", fieldJoiner.toString());
     }
     else {
-      System.out.println("-- column count constant, keep calm");
+      sf_logger.info("-- column count constant, keep calm");
     }
-    System.out.println();
   }
 
   private static String makeEnumName(String title) {

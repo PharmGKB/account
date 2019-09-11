@@ -29,6 +29,8 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     compile 'org.apache.commons:commons-csv:1.6'
     compile group: 'com.google.guava', name: 'guava', version: '27.0.1-jre'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
 
     // Use JUnit test framework
     testCompile 'junit:junit:4.12'

@@ -2,11 +2,15 @@ package org.pharmgkb.account.file;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.pharmgkb.account.ExcelUtils;
 import org.pharmgkb.account.data.Field;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.invoke.MethodHandles;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +21,7 @@ import java.util.List;
  * @author Ryan Whaley
  */
 public abstract class AbstractDataFile {
+  private static final Logger sf_logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
   
   abstract Field[] getExpectedFields();
 
@@ -31,7 +36,7 @@ public abstract class AbstractDataFile {
   }
 
   public List<String> validate() throws IOException {
-    System.out.println("-- validating " + getFilename());
+    sf_logger.info("Validating {}", getFilename());
 
     List<String> messages = new ArrayList<>();
     int validSubjects = 0;
@@ -53,9 +58,8 @@ public abstract class AbstractDataFile {
         lineNumber += 1;
       }
     }
-    messages.forEach(System.out::println);
 
-    System.out.println(String.format("Valid subjects: %d/%d\n", validSubjects, totalSubjects));
+    sf_logger.info("valid subject count: {}/{}", validSubjects, totalSubjects);
     return messages;
   }
 
@@ -66,10 +70,12 @@ public abstract class AbstractDataFile {
       messages.add(String.format("Line %d unexpected length: expected %d, got %d", lineNumber, getExpectedFields().length, record.size()));
     }
 
+    String subjectId = record.get(0);
+    String siteId = record.get(1);
     for (int i = 0; i < getExpectedFields().length; i++) {
       Field field = getExpectedFields()[i];
       if (!field.validate(record.get(i))) {
-        messages.add(String.format("Line %d, Column %d: invalid %s [%s]", lineNumber, i+1, field.name(), record.get(i)));
+        messages.add(String.format("Site:%s %s %s%d: invalid %s [%s]", siteId, subjectId, ExcelUtils.getExcelColumnName(i+1), lineNumber, field.name(), record.get(i)));
       }
     }
 
