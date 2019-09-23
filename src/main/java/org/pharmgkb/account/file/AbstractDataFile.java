@@ -27,7 +27,7 @@ public abstract class AbstractDataFile {
 
   private Path filePath;
   
-  private String getFilename() {
+  public String getFilename() {
     return this.filePath.getFileName().toString();
   }
 
@@ -75,7 +75,13 @@ public abstract class AbstractDataFile {
     for (int i = 0; i < getExpectedFields().length; i++) {
       Field field = getExpectedFields()[i];
       if (!field.validate(record.get(i))) {
-        messages.add(String.format("Site:%s %s %s%d: invalid %s [%s]", siteId, subjectId, ExcelUtils.getExcelColumnName(i+1), lineNumber, field.name(), record.get(i)));
+        messages.add(String.format("%s\t%s\t%s%d\tinvalid %s\t%s\n",
+            siteId,
+            subjectId,
+            ExcelUtils.getExcelColumnName(i+1), lineNumber,
+            field.name(),
+            record.get(i)
+        ));
       }
     }
 

@@ -13,6 +13,7 @@ import org.pharmgkb.account.file.WarfarinDataFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.nio.file.Path;
@@ -68,8 +69,19 @@ class App {
         sf_logger.warn("WARNING: The field \"{}\" will NOT be checked for validation", field.getDisplayName());
       }
     }
-    for (AbstractDataFile dataFile : this.dataFiles) {
-      dataFile.validate().forEach(sf_logger::warn);
+    
+    String columnHeaders = "Site\tSubject ID\tCell Address\tField Name\tBad Value\n";
+    Path validationFilePath = Paths.get("out", "validation.tsv");
+    try (FileWriter fileWriter = new FileWriter(validationFilePath.toFile())) {
+      for (AbstractDataFile dataFile : this.dataFiles) {
+        fileWriter.write("Validation for " + dataFile.getFilename() + "\n");
+        fileWriter.write(columnHeaders);
+        for (String m : dataFile.validate()) {
+          fileWriter.write(m);
+        }
+        fileWriter.write("\n");
+      }
+      sf_logger.info("Wrote validation to {}", validationFilePath);
     }
   }
 }

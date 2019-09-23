@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 class FieldPattern {
   static final String DATE = "^(\\d{1,2}\\/\\d{1,2}\\/(\\d{2}|\\d{4})|MD)$";
   static final String ANY = "^.*$";
-  static final String YESNO = "^[YN]$";
   static final String YESNONA = "^([YN]|NA|MD)$";
   static final String CHECKED = "^(Checked|Unchecked|MD)$";
   static final String DECIMAL = "^([\\d,]+(\\.\\d+)?|MD)$";
