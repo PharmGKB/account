@@ -11,7 +11,7 @@ import java.nio.file.Path;
  */
 public class ClopidogrelDataFile extends AbstractDataFile {
 
-  public static final Field[] FIELDS = new Field[]{
+  public static final Field[] FIELDS = new org.pharmgkb.account.data.Field[]{
       Field.STUDY_ID_PHARMGKB_ID,
       Field.PROJECT_SITE,
       Field.GENDER,
@@ -48,11 +48,14 @@ public class ClopidogrelDataFile extends AbstractDataFile {
       Field.APPROXIMATE_TIME_ON_THERAPY_AT_ENROLLMENT,
       Field.CESSATION_OF_THERAPY_COMPLIANCE,
       Field.ASPIRIN,
-      Field.ASPIRIN_DOSE_MG_DAY,
+      Field.ASPIRIN_DAILY_DOSE_MG_DAY,
+      Field.ASPIRIN_PRN_DOSE_MG_DAY,
       Field.ACETAMINOPHEN_OR_PARACETAMOL_TYLENOL,
-      Field.ACETAMINOPHEN_PARACETAMOL_DOSE_MG_DAY,
+      Field.ACETAMINOPHEN_PARACETAMOL_DAILY_DOSE_MG_DAY,
+      Field.ACETAMINOPHEN_PARACETAMOL_PRN_DOSE_MG_DAY,
       Field.NSAIDS,
-      Field.NSAIDS_DOSE_MG_DAY,
+      Field.NSAIDS_DAILY_DOSE_MG_DAY,
+      Field.NSAIDS_PRN_DOSE_MG_DAY,
       Field.PROTON_PUMP_INHIBITORS_PPIS,
       Field.PROTON_PUMP_INHIBITORS_PPIS_NAMES,
       Field.STATINS,
@@ -234,7 +237,7 @@ public class ClopidogrelDataFile extends AbstractDataFile {
       Field.HEMATOCRIT,
       Field.HEMOGLOBIN_G_DL__PRE_CLOPIDOGREL,
       Field.PLASMA_UREA_MMOL_L,
-      Field.VARIOUS_CHOLESTEROL_MEASUREMENT_TOTAL_LDL_HDL_ETC_REQUIRED,
+      Field.VARIOUS_CHOLESTEROL_MEASUREMENT_TOTAL_LDL_HDL_ETC,
       Field.LDL_MG_DL,
       Field.HDL_MG_DL,
       Field.TOTAL_CHOLESTEROL_MG_DL,

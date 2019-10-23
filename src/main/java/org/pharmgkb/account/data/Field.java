@@ -191,6 +191,13 @@ public enum Field {
   WHICH_NOAC_DRUG_USED_CHOICE_4("Which NOAC drug used? (choice=4)", FieldPattern.CHECKED), //N2
   EGFR_30_ML_MIN_1_73M_2("eGFR < 30 ml/min/1.73m^2", FieldPattern.YESNONA), //W3, W4, W5, W6, W7
   EGFR_AT_EMBOLIC_EVENT("eGFR at Embolic event", FieldPattern.DECIMAL), //W3, W4, W5, W6, W7
+  ASPIRIN_DAILY_DOSE_MG_DAY("Aspirin Daily Dose (mg/day)", FieldPattern.DECIMAL), //C2
+  ASPIRIN_PRN_DOSE_MG_DAY("Aspirin PRN Dose (mg/day)", FieldPattern.DECIMAL), //C2
+  ACETAMINOPHEN_PARACETAMOL_DAILY_DOSE_MG_DAY("Acetaminophen/Paracetamol Daily Dose (mg/day)", FieldPattern.DECIMAL), //C2
+  ACETAMINOPHEN_PARACETAMOL_PRN_DOSE_MG_DAY("Acetaminophen/Paracetamol PRN Dose (mg/day)", FieldPattern.DECIMAL), //C2
+  NSAIDS_DAILY_DOSE_MG_DAY("NSAIDs Daily Dose (mg/day)", FieldPattern.DECIMAL), //C2
+  NSAIDS_PRN_DOSE_MG_DAY("NSAIDs PRN Dose (mg/day)", FieldPattern.DECIMAL), //C2
+  VARIOUS_CHOLESTEROL_MEASUREMENT_TOTAL_LDL_HDL_ETC("Various cholesterol measurement (total, LDL, HDL, etc.)", FieldPattern.ANY), //C8
   ;
   
   private String displayName;

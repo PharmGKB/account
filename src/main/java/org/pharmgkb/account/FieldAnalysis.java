@@ -120,7 +120,7 @@ public class FieldAnalysis {
       fieldJoiner.add("new org.pharmgkb.account.data.Field[]{");
       for (String line : fields) {
         String field = StringUtils.strip(line);
-        fieldJoiner.add("org.pharmgkb.account.data.Field." + makeEnumName(field) + ",");
+        fieldJoiner.add("    Field." + makeEnumName(field) + ",");
 
         fieldLocationMap.put(field, title+group);
 
