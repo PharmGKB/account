@@ -3,12 +3,15 @@ package org.pharmgkb.account.data;
 import java.util.regex.Pattern;
 
 /**
- * A collection of RegEx Pattern strings that can be used to validate CSV fields 
+ * A collection of RegEx Pattern strings that can be used to validate CSV fields.
  *
+ * The "MD" values are for "missing data".
+ * 
  * @author Ryan Whaley
  */
 class FieldPattern {
-  static final String DATE = "^(\\d{1,2}\\/\\d{1,2}\\/(\\d{2}|\\d{4})|MD)$";
+  // need to accommodate M/D/Y or Y/M/D with either /'s or -'s (or missing data)
+  static final String DATE = "^(\\d{1,2}[/-]\\d{1,2}[/-](\\d{2}|\\d{4})|((\\d{2}|\\d{4})[/-]\\d{1,2}[/-]\\d{1,2})|MD)$";
   static final String ANY = "^.*$";
   static final String YESNONA = "^([YN]|NA|MD)$";
   static final String CHECKED = "^(Checked|Unchecked|MD)$";
