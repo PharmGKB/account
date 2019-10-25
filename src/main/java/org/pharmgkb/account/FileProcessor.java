@@ -26,7 +26,7 @@ import java.util.List;
  * 
  * @author Ryan Whaley
  */
-class App {
+class FileProcessor {
   private static final Logger sf_logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
   private static final String VALIDATION_HEADER = "Site\tSubject ID\tCell Address\tField Name\tBad Value\n";
 
@@ -41,7 +41,7 @@ class App {
 
     try {
       CommandLine cli = cliParser.parse(o, args);
-      App app = new App(
+      FileProcessor app = new FileProcessor(
           Paths.get(cli.getOptionValue("c")),
           Paths.get(cli.getOptionValue("n")),
           Paths.get(cli.getOptionValue("w"))
@@ -52,7 +52,7 @@ class App {
     }
   }
 
-  private App(Path clopidogrelPath, Path noacPath, Path warfarinPath) {
+  private FileProcessor(Path clopidogrelPath, Path noacPath, Path warfarinPath) {
     Preconditions.checkArgument(clopidogrelPath.toFile().exists(), "Clopidogrel file not found");
     Preconditions.checkArgument(noacPath.toFile().exists(), "NOAC file not found");
     Preconditions.checkArgument(warfarinPath.toFile().exists(), "Warfarin file not found");
