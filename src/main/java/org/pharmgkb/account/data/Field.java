@@ -91,7 +91,7 @@ public enum Field {
   HEMORRHAGIC_STROKE("Hemorrhagic Stroke", FieldPattern.YESNONA), //C3, C4, C5, C6, C7
   HERBAL_MEDICATIONS_VITAMINS_SUPPLEMENTS_INCLUDES_GARLIC_GINSENG_DANSHEN_DONG_QUAI_ZINC_IRON_MAGNESIUM_ETC("Herbal Medications, Vitamins, Supplements (includes garlic, ginseng, danshen, dong quai, zinc, iron, magnesium, etc)", FieldPattern.YESNONA), //C2
   HERBAL_MEDICATIONS_VITAMINS_SUPPLEMENTS_INCLUDES_GARLIC_GINSENG_DANSHEN_DONQUAI_VITAMINS_ZINC_IRON_MAGNESIUM_ETC("Herbal Medications, Vitamins, Supplements (includes garlic, ginseng, danshen, donquai, vitamins, zinc, iron, magnesium, etc)", FieldPattern.YESNONA), //W2
-  HOW_LONG_A_SMOKER("How long a smoker?", FieldPattern.INTEGER), //C1, N1, W1
+  HOW_LONG_A_SMOKER("How long a smoker?", FieldPattern.DECIMAL), //C1, N1, W1
   HYPERCHOLESTEROLEMIA("Hypercholesterolemia", FieldPattern.YESNONA), //C1, N1, W1
   HYPERTENSION("Hypertension", FieldPattern.YESNONA), //C1, N1, W1
   INR_AT_EMBOLIC_EVENT("INR at Embolic event", FieldPattern.DECIMAL), //W3, W4, W5, W6, W7
