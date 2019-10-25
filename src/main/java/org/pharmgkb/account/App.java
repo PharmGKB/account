@@ -52,9 +52,9 @@ class App {
   }
 
   private App(Path clopidogrelPath, Path noacPath, Path warfarinPath) {
-    Preconditions.checkArgument(clopidogrelPath.toFile().exists());
-    Preconditions.checkArgument(noacPath.toFile().exists());
-    Preconditions.checkArgument(warfarinPath.toFile().exists());
+    Preconditions.checkArgument(clopidogrelPath.toFile().exists(), "Clopidogrel file not found");
+    Preconditions.checkArgument(noacPath.toFile().exists(), "NOAC file not found");
+    Preconditions.checkArgument(warfarinPath.toFile().exists(), "Warfarin file not found");
 
     this.dataFiles.add(new ClopidogrelDataFile(clopidogrelPath));
     this.dataFiles.add(new NOACDataFile(noacPath));
