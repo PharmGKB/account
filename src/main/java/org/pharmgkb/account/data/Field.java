@@ -165,7 +165,7 @@ public enum Field {
   STENT_THROMBOSIS_DURING_FOLLOW_UP("Stent Thrombosis during follow up", FieldPattern.YESNONA), //C3, C4, C5, C6, C7
   STENT_THROMBOSIS_TIMING("Stent Thrombosis timing", FieldPattern.INTEGER), //C3, C4, C5, C6, C7
   STENT_TYPE("Stent type", "[123]|MD"), //C3, C4, C5, C6, C7
-  STUDY_ID_PHARMGKB_ID("Study ID (PharmGKB ID)", "^PA\\d+"), //C1, N1, W1
+  STUDY_ID_PHARMGKB_ID("Study ID (PharmGKB ID)", "^[Pp][Aa]\\d+"), //C1, N1, W1
   SULFONAMIDE_ANTIBIOTICS_INCLUDES_SEPTRA_BACTRIM_COTRIM_AND_SULFATRIM("Sulfonamide Antibiotics (includes Septra, Bactrim, Cotrim and Sulfatrim)", FieldPattern.YESNONA), //W2
   TARGET_INR("Target INR", FieldPattern.DECIMAL_RANGE), //W2
   THERAPEUTIC_DOSE_MG_DAY("Therapeutic dose (mg/day)", FieldPattern.DECIMAL), //N2
@@ -210,7 +210,8 @@ public enum Field {
   TIME_TO_ISC_STROKE("Time to ischemic stroke (in days)", FieldPattern.DECIMAL),
   TIME_TO_HEM_STROKE("Time to hmorrhagic stroke (in days)", FieldPattern.DECIMAL),
   TIME_TO_DEATH("Time to death (in days)", FieldPattern.DECIMAL),
-  DURATION_FOLLOWUP("Duration of follow-up (in days)", FieldPattern.DECIMAL),
+  DURATION_FOLLOWUP("Calculated Duration of follow-up (in days)", FieldPattern.DECIMAL),
+  TIME_TO_EMBOLIC_EVENT("Time to Embolic Event (in days)", FieldPattern.DECIMAL),
   ;
   
   private String displayName;

@@ -3,6 +3,8 @@ package org.pharmgkb.account.file;
 import org.pharmgkb.account.data.Field;
 
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The Warfarin data file
@@ -10,7 +12,8 @@ import java.nio.file.Path;
  * @author Ryan Whaley
  */
 public class WarfarinDataFile extends AbstractDataFile {
-  
+
+  private static final String OUTPUT_FILE = "account_warfarin_processed.csv";
   public static final Field[] FIELDS = new Field[]{
       Field.STUDY_ID_PHARMGKB_ID,
       Field.PROJECT_SITE,
@@ -179,6 +182,13 @@ public class WarfarinDataFile extends AbstractDataFile {
       Field.HEMOGLOBIN_G_DL,
       Field.COMPLETE,
   };
+  private static final Map<Field, Field> CALCULATION_MAP = new HashMap<>();
+  static {
+    CALCULATION_MAP.put(Field.DATE_OF_BLEEDING_EVENT, Field.TIME_TO_BLEEDING_EVENT);
+    CALCULATION_MAP.put(Field.DATE_OF_EMBOLIC_EVENT, Field.TIME_TO_EMBOLIC_EVENT);
+    CALCULATION_MAP.put(Field.DATE_OF_DEATH, Field.TIME_TO_DEATH);
+    CALCULATION_MAP.put(Field.DATE_OF_LAST_FOLLOW_UP, Field.DURATION_FOLLOWUP);
+  }
   
   public WarfarinDataFile(Path filePath) {
     setFilePath(filePath);
@@ -187,5 +197,15 @@ public class WarfarinDataFile extends AbstractDataFile {
   @Override
   public Field[] getExpectedFields() {
     return FIELDS;
+  }
+
+  @Override
+  Map<Field, Field> getCalculationMap() {
+    return CALCULATION_MAP;
+  }
+
+  @Override
+  String getOutputFilename() {
+    return OUTPUT_FILE;
   }
 }

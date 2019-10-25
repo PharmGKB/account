@@ -28,6 +28,7 @@ import java.util.List;
  */
 class App {
   private static final Logger sf_logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final String VALIDATION_HEADER = "Site\tSubject ID\tCell Address\tField Name\tBad Value\n";
 
   private List<AbstractDataFile> dataFiles = new ArrayList<>();
 
@@ -70,21 +71,17 @@ class App {
       }
     }
     
-    String columnHeaders = "Site\tSubject ID\tCell Address\tField Name\tBad Value\n";
-    Path validationFilePath = Paths.get("out", "validation.tsv");
-    try (FileWriter fileWriter = new FileWriter(validationFilePath.toFile())) {
-      for (AbstractDataFile dataFile : this.dataFiles) {
-        fileWriter.write("Validation for " + dataFile.getFilename() + "\n");
-        fileWriter.write(columnHeaders);
+    for (AbstractDataFile dataFile : this.dataFiles) {
+      Path validationFilePath = Paths.get("out", dataFile.getFilename() + ".validation.tsv");
+      try (FileWriter fileWriter = new FileWriter(validationFilePath.toFile())) {
+        fileWriter.write(VALIDATION_HEADER);
         for (String m : dataFile.validate()) {
           fileWriter.write(m);
         }
         fileWriter.write("\n");
         
-        if (dataFile instanceof ClopidogrelDataFile) {
-          Path clopidogrelFile = ((ClopidogrelDataFile)dataFile).makeProcessedFile();
-          sf_logger.info("wrote {}", clopidogrelFile);
-        }
+        Path processedFile = dataFile.makeProcessedFile();
+        sf_logger.info("Wrote {}", processedFile);
       }
       sf_logger.info("Wrote validation to {}", validationFilePath);
     }

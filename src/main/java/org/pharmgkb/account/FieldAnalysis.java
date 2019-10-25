@@ -117,7 +117,7 @@ public class FieldAnalysis {
     if (fields.size() != expectedColumnCount) {
       sf_logger.warn("WARNING Column count has changed, check the new definition");
       StringJoiner fieldJoiner = new StringJoiner("\n");
-      fieldJoiner.add("new org.pharmgkb.account.data.Field[]{");
+      fieldJoiner.add("new Field[]{");
       for (String line : fields) {
         String field = StringUtils.strip(line);
         fieldJoiner.add("    Field." + makeEnumName(field) + ",");

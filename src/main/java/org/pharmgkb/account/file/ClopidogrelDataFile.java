@@ -1,17 +1,11 @@
 package org.pharmgkb.account.file;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVRecord;
 import org.pharmgkb.account.data.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -282,48 +276,21 @@ public class ClopidogrelDataFile extends AbstractDataFile {
   public ClopidogrelDataFile(Path filePath) {
     setFilePath(filePath);
   }
-  
+
+  @Override
   public Field[] getExpectedFields() {
     return FIELDS;
   }
-  
-  public Path makeProcessedFile() throws IOException {
-    Path outputPath = Paths.get("out", OUTPUT_FILE);
-    try (
-        FileWriter fileWriter = new FileWriter(outputPath.toFile());
-        CSVPrinter csv = new CSVPrinter(fileWriter, CSVFormat.EXCEL)
-    ) {
-      // write the headers
-      for (Field field : FIELDS) {
-        csv.print(field.getDisplayName());
-        if (CALCULATION_MAP.containsKey(field)) {
-          csv.print(CALCULATION_MAP.get(field).getDisplayName());
-        }
-      }
-      csv.println();
 
-      // loop through each record of the dataset
-      int rowIdx = 0;
-      for (CSVRecord record : m_records) {
-        int colIdx = 0;
-        for(Object recordField : record) {
-          csv.print(recordField);
-          Field field = FIELDS[colIdx];
-          Field calcField = CALCULATION_MAP.get(field);
-          if (calcField != null) {
-            String diff = diffFromEnrollment(record, (String)recordField).map(String::valueOf).orElse("");
-            csv.print(diff);
-            
-            if (diff.startsWith("-")) {
-              sf_logger.warn("Negative date diff in row {}, column {}", rowIdx+2, colIdx+1);
-            }
-          }
-          colIdx += 1;
-        }
-        csv.println();
-        rowIdx += 1;
-      }
-    }
-    return outputPath;
+  @Override
+  Map<Field, Field> getCalculationMap() {
+    return CALCULATION_MAP;
   }
+
+  @Override
+  String getOutputFilename() {
+    return OUTPUT_FILE;
+  }
+  
+  
 }

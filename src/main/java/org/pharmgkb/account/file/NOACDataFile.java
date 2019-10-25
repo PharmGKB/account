@@ -3,6 +3,8 @@ package org.pharmgkb.account.file;
 import org.pharmgkb.account.data.Field;
 
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The NOAC data file
@@ -10,6 +12,7 @@ import java.nio.file.Path;
  * @author Ryan Whaley
  */
 public class NOACDataFile extends AbstractDataFile {
+  private static final String OUTPUT_FILE = "account_noac_processed.csv";
   public static final Field[] FIELDS = new Field[]{
       Field.STUDY_ID_PHARMGKB_ID,
       Field.PROJECT_SITE,
@@ -49,11 +52,14 @@ public class NOACDataFile extends AbstractDataFile {
       Field.TIME_OF_BLOOD_DRAW,
       Field.LIST_OF_ACTIVE_MEDICATIONS_RX_AND_OTC,
       Field.ASPIRIN,
-      Field.ASPIRIN_DOSE_MG_DAY,
+      Field.ASPIRIN_DAILY_DOSE_MG_DAY,
+      Field.ASPIRIN_PRN_DOSE_MG_DAY,
       Field.ACETAMINOPHEN_OR_PARACETAMOL_TYLENOL,
-      Field.ACETAMINOPHEN_PARACETAMOL_DOSE_MG_DAY,
+      Field.ACETAMINOPHEN_PARACETAMOL_DAILY_DOSE_MG_DAY,
+      Field.ACETAMINOPHEN_PARACETAMOL_PRN_DOSE_MG_DAY,
       Field.NSAIDS,
-      Field.NSAIDS_DOSE_MG_DAY,
+      Field.NSAIDS_DAILY_DOSE_MG_DAY,
+      Field.NSAIDS_PRN_DOSE_MG_DAY,
       Field.NSAID_NAMES,
       Field.COMPLETE,
       Field.DURATION_OF_FOLLOW_UP,
@@ -140,12 +146,24 @@ public class NOACDataFile extends AbstractDataFile {
       Field.ANTI_FACTOR_XA_ACTIVITY,
       Field.COMPLETE,
   };
+  private static final Map<Field, Field> CALCULATION_MAP = new HashMap<>();
   
   public NOACDataFile(Path filePath) {
     setFilePath(filePath);
   }
-  
+
+  @Override
   public Field[] getExpectedFields() {
     return FIELDS;
+  }
+
+  @Override
+  Map<Field, Field> getCalculationMap() {
+    return CALCULATION_MAP;
+  }
+
+  @Override
+  String getOutputFilename() {
+    return OUTPUT_FILE;
   }
 }

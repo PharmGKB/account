@@ -2,6 +2,7 @@ package org.pharmgkb.account.file;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.time.DateUtils;
 import org.pharmgkb.account.ExcelUtils;
@@ -11,14 +12,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.invoke.MethodHandles;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.nio.file.Paths;
+import java.util.*;
 
 /**
  * An abstract class to implement for a data file
@@ -27,9 +27,54 @@ import java.util.Optional;
  */
 public abstract class AbstractDataFile {
   private static final Logger sf_logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-  List<CSVRecord> m_records = new ArrayList<>();
+  private List<CSVRecord> m_records = new ArrayList<>();
 
   abstract Field[] getExpectedFields();
+  
+  abstract Map<Field, Field> getCalculationMap();
+  
+  abstract String getOutputFilename();
+
+  public Path makeProcessedFile() throws IOException {
+    Path outputPath = Paths.get("out", getOutputFilename());
+    try (
+        FileWriter fileWriter = new FileWriter(outputPath.toFile());
+        CSVPrinter csv = new CSVPrinter(fileWriter, CSVFormat.EXCEL)
+    ) {
+      // write the headers
+      for (Field field : getExpectedFields()) {
+        csv.print(field.getDisplayName());
+        if (getCalculationMap().containsKey(field)) {
+          csv.print(getCalculationMap().get(field).getDisplayName());
+        }
+      }
+      csv.println();
+
+      // loop through each record of the dataset
+      int rowIdx = 0;
+      for (CSVRecord record : m_records) {
+        int colIdx = 0;
+        for(Object recordField : record) {
+          csv.print(recordField);
+          Field field = getExpectedFields()[colIdx];
+          Field calcField = getCalculationMap().get(field);
+          if (calcField != null) {
+            String diff = diffFromEnrollment(record, (String)recordField).map(String::valueOf).orElse("");
+            csv.print(diff);
+
+            if (diff.startsWith("-")) {
+              sf_logger.warn("Negative date diff in row {}, column {}", rowIdx+2, colIdx+1);
+            }
+          }
+          colIdx += 1;
+        }
+        csv.println();
+        rowIdx += 1;
+      }
+    }
+    return outputPath;
+  }
+
 
   private Path filePath;
   
@@ -95,7 +140,7 @@ public abstract class AbstractDataFile {
     return messages;
   }
   
-  Optional<Long> diffFromEnrollment(CSVRecord record, String dateString) {
+  private Optional<Long> diffFromEnrollment(CSVRecord record, String dateString) {
     List<Field> possibleFieldList = Lists.newArrayList(getExpectedFields());
 
     int enrollmentIdx = possibleFieldList.indexOf(Field.ENROLLMENT_DATE);

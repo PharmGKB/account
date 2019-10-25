@@ -22,7 +22,7 @@ public class FieldPattern {
   static final String DECIMAL = "^([\\d,]+(\\.\\d+)?|MD)$";
   static final String DECIMAL_RANGE = "^(\\d+(\\.\\d+)?(\\s*-\\s*\\d+(\\.\\d+)?)?|MD)$";
   static final String INTEGER = "^([\\d,]+|MD)$";
-  static final String TIME_OF_DAY = "(\\d{1,2}(:\\d{2})?\\s?(am|AM|pm|PM)|\\d{2}:\\d{2}|MD)";
+  static final String TIME_OF_DAY = "(\\d{1,2}(:\\d{2})?\\s*(am|AM|pm|PM)|\\d{2}:\\d{2}|MD)";
   static final String DAYS = "([\\d,]+|MD)";
 
   static final String MISSING_DATA = "MD";
