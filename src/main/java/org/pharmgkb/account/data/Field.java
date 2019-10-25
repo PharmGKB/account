@@ -198,6 +198,19 @@ public enum Field {
   NSAIDS_DAILY_DOSE_MG_DAY("NSAIDs Daily Dose (mg/day)", FieldPattern.DECIMAL), //C2
   NSAIDS_PRN_DOSE_MG_DAY("NSAIDs PRN Dose (mg/day)", FieldPattern.DECIMAL), //C2
   VARIOUS_CHOLESTEROL_MEASUREMENT_TOTAL_LDL_HDL_ETC("Various cholesterol measurement (total, LDL, HDL, etc.)", FieldPattern.ANY), //C8
+  TIME_TO_BLEEDING_EVENT("Time to Bleeding Event (in days)", FieldPattern.DECIMAL),
+  TIME_TO_MACE("Time to MACE (in days)", FieldPattern.DECIMAL),
+  TIME_TO_STEMI("Time to first STEMI (in days)", FieldPattern.DECIMAL),
+  TIME_TO_NSTEMI("Time to first NSTEMI (in days)", FieldPattern.DECIMAL),
+  TIME_TO_ANGINA("Time to unstable angina (in days)", FieldPattern.DECIMAL),
+  TIME_TO_THROMB("Time to thrombosis (in days)", FieldPattern.DECIMAL),
+  TIME_TO_CARD_DEATH("Time to cardiac death (in days)", FieldPattern.DECIMAL),
+  TIME_TO_MI("Time to MI (in days)", FieldPattern.DECIMAL),
+  TIME_TO_ACS("Time to first ACS (in days)", FieldPattern.DECIMAL),
+  TIME_TO_ISC_STROKE("Time to ischemic stroke (in days)", FieldPattern.DECIMAL),
+  TIME_TO_HEM_STROKE("Time to hmorrhagic stroke (in days)", FieldPattern.DECIMAL),
+  TIME_TO_DEATH("Time to death (in days)", FieldPattern.DECIMAL),
+  DURATION_FOLLOWUP("Duration of follow-up (in days)", FieldPattern.DECIMAL),
   ;
   
   private String displayName;

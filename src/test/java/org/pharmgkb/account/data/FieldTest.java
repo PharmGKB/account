@@ -2,6 +2,9 @@ package org.pharmgkb.account.data;
 
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static org.junit.Assert.*;
 
 /**
@@ -39,6 +42,20 @@ public class FieldTest {
     assertTrue(Field.ENROLLMENT_DATE.validate("10-24-2019"));
     assertTrue(Field.ENROLLMENT_DATE.validate("2019-10-24"));
     assertFalse(Field.ENROLLMENT_DATE.validate("201-10-24"));
+  }
+  
+  @Test
+  public void testDateParse() {
+    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+
+    Date testDate = FieldPattern.parseDate("10-24-2019");
+    assertEquals("10/24/2019", sdf.format(testDate));
+
+    Date testDate2 = FieldPattern.parseDate("2019-10-24");
+    assertEquals("10/24/2019", sdf.format(testDate2));
+    
+    assertNull(FieldPattern.parseDate("20191024"));
+    assertNull(FieldPattern.parseDate("201-10-24"));
   }
   
   private void testValues(Field column, String good, String bad) {

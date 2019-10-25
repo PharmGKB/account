@@ -1,8 +1,16 @@
 package org.pharmgkb.account.file;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 import org.pharmgkb.account.data.Field;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The clopidogrel data file
@@ -10,7 +18,7 @@ import java.nio.file.Path;
  * @author Ryan Whaley
  */
 public class ClopidogrelDataFile extends AbstractDataFile {
-
+  private static final String OUTPUT_FILE = "account_clopidogrel_processed.csv";
   public static final Field[] FIELDS = new org.pharmgkb.account.data.Field[]{
       Field.STUDY_ID_PHARMGKB_ID,
       Field.PROJECT_SITE,
@@ -250,6 +258,22 @@ public class ClopidogrelDataFile extends AbstractDataFile {
       Field.HEMOGLOBIN_G_DL_ON_PLAVIX,
       Field.COMPLETE,
   };
+  private static final Map<Field, Field> CALCULATION_MAP = new HashMap<>();
+  static {
+    CALCULATION_MAP.put(Field.DATE_OF_BLEEDING_EVENT, Field.TIME_TO_BLEEDING_EVENT);
+    CALCULATION_MAP.put(Field.DATE_OF_MACE, Field.TIME_TO_MACE);
+    CALCULATION_MAP.put(Field.DATE_OF_THE_FIRST_STEMI, Field.TIME_TO_STEMI);
+    CALCULATION_MAP.put(Field.DATE_OF_THE_FIRST_NSTEMI, Field.TIME_TO_NSTEMI);
+    CALCULATION_MAP.put(Field.DATE_OF_THE_FIRST_UNSTABLE_ANGINA_DURING_FOLLOW_UP, Field.TIME_TO_ANGINA);
+    CALCULATION_MAP.put(Field.DATE_OF_THROMBOSIS, Field.TIME_TO_THROMB);
+    CALCULATION_MAP.put(Field.DATE_OF_CARDIAC_DEATH, Field.TIME_TO_CARD_DEATH);
+    CALCULATION_MAP.put(Field.DATE_OF_THE_FIRST_MI, Field.TIME_TO_MI);
+    CALCULATION_MAP.put(Field.DATE_OF_THE_FIRST_ACS, Field.TIME_TO_ACS);
+    CALCULATION_MAP.put(Field.DATE_OF_ISCHEMIC_STROKE, Field.TIME_TO_ISC_STROKE);
+    CALCULATION_MAP.put(Field.DATE_OF_HEMORRHAGIC_STROKE, Field.TIME_TO_HEM_STROKE);
+    CALCULATION_MAP.put(Field.DATE_OF_DEATH, Field.TIME_TO_DEATH);
+    CALCULATION_MAP.put(Field.DATE_OF_LAST_FOLLOW_UP, Field.DURATION_FOLLOWUP);
+  }
 
   public ClopidogrelDataFile(Path filePath) {
     setFilePath(filePath);
@@ -257,5 +281,39 @@ public class ClopidogrelDataFile extends AbstractDataFile {
   
   public Field[] getExpectedFields() {
     return FIELDS;
+  }
+  
+  public Path makeProcessedFile() throws IOException {
+    Path outputPath = Paths.get("out", OUTPUT_FILE);
+    try (
+        FileWriter fileWriter = new FileWriter(outputPath.toFile());
+        CSVPrinter csv = new CSVPrinter(fileWriter, CSVFormat.EXCEL)
+    ) {
+      // write the headers
+      for (Field field : FIELDS) {
+        csv.print(field.getDisplayName());
+        if (CALCULATION_MAP.containsKey(field)) {
+          csv.print(CALCULATION_MAP.get(field).getDisplayName());
+        }
+      }
+      csv.println();
+
+      // loop through each record of the dataset
+      for (CSVRecord record : m_records) {
+        int i=0;
+        for(Object recordField : record) {
+          csv.print(recordField);
+          Field field = FIELDS[i];
+          Field calcField = CALCULATION_MAP.get(field);
+          if (calcField != null) {
+            csv.print(diffFromEnrollment(record, (String)recordField).map(String::valueOf).orElse(""));
+          }
+          
+          i += 1;
+        }
+        csv.println();
+      }
+    }
+    return outputPath;
   }
 }

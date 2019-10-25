@@ -80,6 +80,11 @@ class App {
           fileWriter.write(m);
         }
         fileWriter.write("\n");
+        
+        if (dataFile instanceof ClopidogrelDataFile) {
+          Path clopidogrelFile = ((ClopidogrelDataFile)dataFile).makeProcessedFile();
+          sf_logger.info("wrote {}", clopidogrelFile);
+        }
       }
       sf_logger.info("Wrote validation to {}", validationFilePath);
     }

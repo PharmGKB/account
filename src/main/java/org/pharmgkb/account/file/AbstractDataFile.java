@@ -1,9 +1,12 @@
 package org.pharmgkb.account.file;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.time.DateUtils;
 import org.pharmgkb.account.ExcelUtils;
 import org.pharmgkb.account.data.Field;
+import org.pharmgkb.account.data.FieldPattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +16,9 @@ import java.io.Reader;
 import java.lang.invoke.MethodHandles;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * An abstract class to implement for a data file
@@ -22,7 +27,8 @@ import java.util.List;
  */
 public abstract class AbstractDataFile {
   private static final Logger sf_logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-  
+  List<CSVRecord> m_records = new ArrayList<>();
+
   abstract Field[] getExpectedFields();
 
   private Path filePath;
@@ -46,6 +52,7 @@ public abstract class AbstractDataFile {
       int lineNumber = 1;
       for (CSVRecord record : CSVFormat.DEFAULT.parse(reader)) {
         if (lineNumber != 1) {
+          m_records.add(record);
           totalSubjects += 1;
 
           List<String> recordErrors = validateRow(record, lineNumber);
@@ -86,5 +93,20 @@ public abstract class AbstractDataFile {
     }
 
     return messages;
+  }
+  
+  Optional<Long> diffFromEnrollment(CSVRecord record, String dateString) {
+    List<Field> possibleFieldList = Lists.newArrayList(getExpectedFields());
+
+    int enrollmentIdx = possibleFieldList.indexOf(Field.ENROLLMENT_DATE);
+
+    Date bleedingEvent = FieldPattern.parseDate(dateString);
+    Date enrollment = FieldPattern.parseDate(record.get(enrollmentIdx));
+
+    if (bleedingEvent != null && enrollment != null) {
+      return Optional.of((bleedingEvent.getTime() - enrollment.getTime()) / DateUtils.MILLIS_PER_DAY);
+    } else {
+      return Optional.empty();
+    }
   }
 }
