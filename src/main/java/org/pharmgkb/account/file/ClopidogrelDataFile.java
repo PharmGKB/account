@@ -4,9 +4,12 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.pharmgkb.account.data.Field;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -18,6 +21,7 @@ import java.util.Map;
  * @author Ryan Whaley
  */
 public class ClopidogrelDataFile extends AbstractDataFile {
+  private static final Logger sf_logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
   private static final String OUTPUT_FILE = "account_clopidogrel_processed.csv";
   public static final Field[] FIELDS = new org.pharmgkb.account.data.Field[]{
       Field.STUDY_ID_PHARMGKB_ID,
@@ -299,19 +303,25 @@ public class ClopidogrelDataFile extends AbstractDataFile {
       csv.println();
 
       // loop through each record of the dataset
+      int rowIdx = 0;
       for (CSVRecord record : m_records) {
-        int i=0;
+        int colIdx = 0;
         for(Object recordField : record) {
           csv.print(recordField);
-          Field field = FIELDS[i];
+          Field field = FIELDS[colIdx];
           Field calcField = CALCULATION_MAP.get(field);
           if (calcField != null) {
-            csv.print(diffFromEnrollment(record, (String)recordField).map(String::valueOf).orElse(""));
+            String diff = diffFromEnrollment(record, (String)recordField).map(String::valueOf).orElse("");
+            csv.print(diff);
+            
+            if (diff.startsWith("-")) {
+              sf_logger.warn("Negative date diff in row {}, column {}", rowIdx+2, colIdx+1);
+            }
           }
-          
-          i += 1;
+          colIdx += 1;
         }
         csv.println();
+        rowIdx += 1;
       }
     }
     return outputPath;
