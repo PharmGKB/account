@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.pharmgkb.account.ExcelUtils;
 import org.pharmgkb.account.data.Field;
@@ -27,6 +28,7 @@ import java.util.*;
  */
 public abstract class AbstractDataFile {
   private static final Logger sf_logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+  private static final ResourceBundle sf_descriptions = ResourceBundle.getBundle("fields");
   private List<CSVRecord> m_records = new ArrayList<>();
 
   abstract Field[] getExpectedFields();
@@ -46,6 +48,13 @@ public abstract class AbstractDataFile {
         csv.print(field.getDisplayName());
         if (getCalculationMap().containsKey(field)) {
           csv.print(getCalculationMap().get(field).getDisplayName());
+        }
+      }
+      csv.println();
+      for (Field field : getExpectedFields()) {
+        csv.print(getDescription(field.name()));
+        if (getCalculationMap().containsKey(field)) {
+          csv.print(getDescription(getCalculationMap().get(field).name()));
         }
       }
       csv.println();
@@ -154,4 +163,13 @@ public abstract class AbstractDataFile {
       return Optional.empty();
     }
   }
+  
+  private static String getDescription(String key) {
+    if (StringUtils.isBlank(key)) return "";
+    try {
+      return sf_descriptions.getString(key);
+    } catch (MissingResourceException ex) {
+      return "";
+    }
+  } 
 }

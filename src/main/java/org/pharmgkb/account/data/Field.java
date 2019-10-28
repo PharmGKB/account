@@ -212,6 +212,7 @@ public enum Field {
   TIME_TO_DEATH("Time to death (in days)", FieldPattern.DECIMAL),
   DURATION_FOLLOWUP("Calculated Duration of follow-up (in days)", FieldPattern.DECIMAL),
   TIME_TO_EMBOLIC_EVENT("Time to Embolic Event (in days)", FieldPattern.DECIMAL),
+  TIME_TO_BLOOD_DRAW("Time to blood draw (in hours)", FieldPattern.DECIMAL),
   ;
   
   private String displayName;
