@@ -147,6 +147,13 @@ public class NOACDataFile extends AbstractDataFile {
       Field.COMPLETE,
   };
   private static final Map<Field, Field> CALCULATION_MAP = new HashMap<>();
+  static {
+    CALCULATION_MAP.put(Field.TIME_OF_BLOOD_DRAW, Field.TIME_TO_BLOOD_DRAW);
+    CALCULATION_MAP.put(Field.DATE_OF_BLEEDING_EVENT, Field.TIME_TO_BLEEDING_EVENT);
+    CALCULATION_MAP.put(Field.DATE_OF_EMBOLIC_EVENT, Field.TIME_TO_EMBOLIC_EVENT);
+    CALCULATION_MAP.put(Field.DATE_OF_DEATH, Field.TIME_TO_DEATH);
+    CALCULATION_MAP.put(Field.DATE_OF_LAST_FOLLOW_UP, Field.DURATION_FOLLOWUP);
+  }
   
   public NOACDataFile(Path filePath) {
     setFilePath(filePath);

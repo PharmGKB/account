@@ -19,7 +19,11 @@ import java.io.Reader;
 import java.lang.invoke.MethodHandles;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static org.pharmgkb.account.data.FieldPattern.isMissing;
 
 /**
  * An abstract class to implement for a data file
@@ -29,6 +33,7 @@ import java.util.*;
 public abstract class AbstractDataFile {
   private static final Logger sf_logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
   private static final ResourceBundle sf_descriptions = ResourceBundle.getBundle("fields");
+  private static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("MM-dd-yyyy hh:mm aaa");
   private List<CSVRecord> m_records = new ArrayList<>();
 
   abstract Field[] getExpectedFields();
@@ -37,7 +42,7 @@ public abstract class AbstractDataFile {
   
   abstract String getOutputFilename();
 
-  public Path makeProcessedFile() throws IOException {
+  public Path makeProcessedFile() throws Exception {
     Path outputPath = Paths.get("out", getOutputFilename());
     try (
         FileWriter fileWriter = new FileWriter(outputPath.toFile());
@@ -68,11 +73,15 @@ public abstract class AbstractDataFile {
           Field field = getExpectedFields()[colIdx];
           Field calcField = getCalculationMap().get(field);
           if (calcField != null) {
-            String diff = diffFromEnrollment(record, (String)recordField).map(String::valueOf).orElse("");
-            csv.print(diff);
+            if (calcField == Field.TIME_TO_BLOOD_DRAW) {
+              csv.print(timeToBloodDraw(record).map(String::valueOf).orElse(""));
+            } else {
+              String diff = diffFromEnrollment(record, (String) recordField).map(String::valueOf).orElse("");
+              csv.print(diff);
 
-            if (diff.startsWith("-")) {
-              sf_logger.warn("Negative date diff in row {}, column {}", rowIdx+2, colIdx+1);
+              if (diff.startsWith("-")) {
+                sf_logger.warn("Negative date diff in row {}, column {}", rowIdx + 2, colIdx + 1);
+              }
             }
           }
           colIdx += 1;
@@ -163,7 +172,27 @@ public abstract class AbstractDataFile {
       return Optional.empty();
     }
   }
-  
+
+  private Optional<Long> timeToBloodDraw(CSVRecord record) throws ParseException {
+    List<Field> possibleFieldList = Lists.newArrayList(getExpectedFields());
+
+    int doseDateIdx = possibleFieldList.indexOf(Field.DATE_OF_LAST_DOSE);
+    int doseTimeIdx = possibleFieldList.indexOf(Field.TIME_OF_LAST_DOSE);
+    String doseDate = record.get(doseDateIdx);
+    String doseTime = record.get(doseTimeIdx);
+    
+    int drawDateIdx = possibleFieldList.indexOf(Field.DATE_OF_BLOOD_DRAW);
+    int drawTimeIdx = possibleFieldList.indexOf(Field.TIME_OF_BLOOD_DRAW);
+    String drawDate = record.get(drawDateIdx);
+    String drawTime = record.get(drawTimeIdx);
+    
+    if ( isMissing(doseDate) || isMissing(doseTime) || isMissing(drawDate) || isMissing(drawTime)) return Optional.empty();
+
+    Date drawStamp = TIMESTAMP_FORMAT.parse((drawDate + " " + drawTime).replaceAll("/", "-").replaceAll("\\s+", " "));
+    Date doseStamp = TIMESTAMP_FORMAT.parse((doseDate + " " + doseTime).replaceAll("/", "-").replaceAll("\\s+", " "));
+    return Optional.of((drawStamp.getTime() - doseStamp.getTime()) / DateUtils.MILLIS_PER_HOUR);
+  }
+
   private static String getDescription(String key) {
     if (StringUtils.isBlank(key)) return "";
     try {

@@ -1,5 +1,7 @@
 package org.pharmgkb.account.data;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,5 +46,9 @@ public class FieldPattern {
     } catch (ParseException e) {
       throw new RuntimeException("Error when parsing date value", e);
     }
+  }
+  
+  public static boolean isMissing(String value) {
+    return StringUtils.isBlank(value) || value.equals(MISSING_DATA);
   }
 }

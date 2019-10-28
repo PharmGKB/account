@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -62,7 +61,7 @@ class FileProcessor {
     this.dataFiles.add(new WarfarinDataFile(warfarinPath));
   }
 
-  private void validate() throws IOException {
+  private void validate() throws Exception {
     sf_logger.info("Starting validation");
 
     for (Field field : Field.values()) {
