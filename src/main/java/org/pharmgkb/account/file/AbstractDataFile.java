@@ -19,8 +19,8 @@ import java.io.Reader;
 import java.lang.invoke.MethodHandles;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 import static org.pharmgkb.account.data.FieldPattern.isMissing;
@@ -33,7 +33,6 @@ import static org.pharmgkb.account.data.FieldPattern.isMissing;
 public abstract class AbstractDataFile {
   private static final Logger sf_logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
   private static final ResourceBundle sf_descriptions = ResourceBundle.getBundle("fields");
-  private static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("MM-dd-yyyy hh:mm aaa");
   private List<CSVRecord> m_records = new ArrayList<>();
 
   abstract Field[] getExpectedFields();
@@ -173,7 +172,7 @@ public abstract class AbstractDataFile {
     }
   }
 
-  private Optional<Long> timeToBloodDraw(CSVRecord record) throws ParseException {
+  private Optional<String> timeToBloodDraw(CSVRecord record) {
     List<Field> possibleFieldList = Lists.newArrayList(getExpectedFields());
 
     int doseDateIdx = possibleFieldList.indexOf(Field.DATE_OF_LAST_DOSE);
@@ -188,9 +187,14 @@ public abstract class AbstractDataFile {
     
     if ( isMissing(doseDate) || isMissing(doseTime) || isMissing(drawDate) || isMissing(drawTime)) return Optional.empty();
 
-    Date drawStamp = TIMESTAMP_FORMAT.parse((drawDate + " " + drawTime).replaceAll("/", "-").replaceAll("\\s+", " "));
-    Date doseStamp = TIMESTAMP_FORMAT.parse((doseDate + " " + doseTime).replaceAll("/", "-").replaceAll("\\s+", " "));
-    return Optional.of((drawStamp.getTime() - doseStamp.getTime()) / DateUtils.MILLIS_PER_HOUR);
+    try {
+      LocalDateTime doseStamp = org.pharmgkb.account.DateUtils.parseDateTime(doseDate, doseTime);
+      LocalDateTime drawStamp = org.pharmgkb.account.DateUtils.parseDateTime(drawDate, drawTime);
+      return Optional.of(org.pharmgkb.account.DateUtils.diff(doseStamp, drawStamp));
+    } catch (DateTimeParseException ex) {
+      sf_logger.warn("Could not parse DateTime", ex);
+      return Optional.empty();
+    }
   }
 
   private static String getDescription(String key) {

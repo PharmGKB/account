@@ -67,6 +67,8 @@ public enum Field {
   DIPYRIDAMOLE("Dipyridamole", FieldPattern.YESNONA), //W2
   DURATION_OF_FOLLOW_UP("Duration of follow up", FieldPattern.DAYS), //C3, C4, C5, C6, C7, N3, N4, N5, N6, N7, W3, W4, W5, W6, W7
   EFAVIRENZ("Efavirenz", FieldPattern.YESNONA), //C2
+
+  // Embolic Event group
   EMBOLIC_EVENT_CHOICE_0("Embolic Event (choice=0)", FieldPattern.CHECKED), //N3, N4, N5, N6, N7, W3, W4, W5, W6, W7
   EMBOLIC_EVENT_CHOICE_1("Embolic Event (choice=1)", FieldPattern.CHECKED), //N3, N4, N5, N6, N7, W3, W4, W5, W6, W7
   EMBOLIC_EVENT_CHOICE_2("Embolic Event (choice=2)", FieldPattern.CHECKED), //N3, N4, N5, N6, N7, W3, W4, W5, W6, W7
@@ -74,6 +76,8 @@ public enum Field {
   EMBOLIC_EVENT_CHOICE_4("Embolic Event (choice=4)", FieldPattern.CHECKED), //N3, N4, N5, N6, N7, W3, W4, W5, W6, W7
   EMBOLIC_EVENT_CHOICE_5("Embolic Event (choice=5)", FieldPattern.CHECKED), //N3, N4, N5, N6, N7, W3, W4, W5, W6, W7
   EMBOLIC_EVENT_CHOICE_MD("Embolic Event (choice=MD)", FieldPattern.CHECKED), //N3, N4, N5, N6, N7, W3, W4, W5, W6, W7
+  // end group
+
   ENROLLMENT_DATE("Enrollment date", FieldPattern.DATE), //C1, N1, W1
   ESTIMATED_TARGET_INR_IF_TARGET_NOT_KNOWN("Estimated Target INR, if target not known", FieldPattern.DECIMAL_RANGE), //W2
   FLUCONAZOLE("Fluconazole", FieldPattern.YESNONA), //C2
@@ -97,18 +101,27 @@ public enum Field {
   INR_AT_EMBOLIC_EVENT("INR at Embolic event", FieldPattern.DECIMAL), //W3, W4, W5, W6, W7
   INR_AT_BLEEDING_EVENT("INR at bleeding event", FieldPattern.DECIMAL), //W3, W4, W5, W6, W7
   INR_ON_REPORTED_THERAPEUTIC_DOSE_OF_WARFARIN("INR on Reported therapeutic dose of warfarin", FieldPattern.DECIMAL), //W2
+  
+  // Indication for clopidogrel treatment group
   INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_1("Indication for Clopidogrel Treatment (choice=1)", FieldPattern.CHECKED), //C1
   INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_2("Indication for Clopidogrel Treatment (choice=2)", FieldPattern.CHECKED), //C1
   INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_3("Indication for Clopidogrel Treatment (choice=3)", FieldPattern.CHECKED), //C1
   INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_4("Indication for Clopidogrel Treatment (choice=4)", FieldPattern.CHECKED), //C1
   INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_5("Indication for Clopidogrel Treatment (choice=5)", FieldPattern.CHECKED), //C1
+  // end group
+  
+  // Indication for NOAC treatment group
   INDICATION_FOR_NOAC_TREATMENT_CHOICE_1("Indication for NOAC Treatment (choice=1)", FieldPattern.CHECKED), //N1
   INDICATION_FOR_NOAC_TREATMENT_CHOICE_2("Indication for NOAC Treatment (choice=2)", FieldPattern.CHECKED), //N1
   INDICATION_FOR_NOAC_TREATMENT_CHOICE_3("Indication for NOAC Treatment (choice=3)", FieldPattern.CHECKED), //N1
   INDICATION_FOR_NOAC_TREATMENT_CHOICE_4("Indication for NOAC Treatment (choice=4)", FieldPattern.CHECKED), //N1
   INDICATION_FOR_NOAC_TREATMENT_CHOICE_5("Indication for NOAC Treatment (choice=5)", FieldPattern.CHECKED), //N1
   INDICATION_FOR_NOAC_TREATMENT_CHOICE_MD("Indication for NOAC Treatment (choice=MD)", FieldPattern.CHECKED), //N1
+  // end group
+  
   INDICATION_FOR_PCI("Indication for PCI", "^([1234]|MD)$"), //C1
+  
+  // Indicaiton for warfarin group
   INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_1("Indication for Warfarin Treatment (choice=1)", FieldPattern.CHECKED), //W1
   INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_2("Indication for Warfarin Treatment (choice=2)", FieldPattern.CHECKED), //W1
   INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_3("Indication for Warfarin Treatment (choice=3)", FieldPattern.CHECKED), //W1
@@ -118,6 +131,8 @@ public enum Field {
   INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_7("Indication for Warfarin Treatment (choice=7)", FieldPattern.CHECKED), //W1
   INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_8("Indication for Warfarin Treatment (choice=8)", FieldPattern.CHECKED), //W1
   INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_MD("Indication for Warfarin Treatment (choice=MD)", FieldPattern.CHECKED), //W1
+  // end group
+  
   ISCHEMIC_STROKE("Ischemic Stroke", FieldPattern.YESNONA), //C3, C4, C5, C6, C7
   LDL_MG_DL("LDL (mg/dL)", FieldPattern.INTEGER), //C8
   LIST_OF_ACTIVE_MEDICATIONS_RX_AND_OTC("List of active medications (RX and OTC)", FieldPattern.ANY), //N2
@@ -185,10 +200,14 @@ public enum Field {
   WARFARIN("Warfarin", FieldPattern.YESNONA), //C2
   WARFARIN_DOSE_MG_WEEK("Warfarin dose (mg/week)", FieldPattern.DECIMAL), //W2
   WEIGHT_KG("Weight (kg)", FieldPattern.DECIMAL), //C1, N1, W1
+  
+  // Which NOAC Drug used group
   WHICH_NOAC_DRUG_USED_CHOICE_1("Which NOAC drug used? (choice=1)", FieldPattern.CHECKED), //N2
   WHICH_NOAC_DRUG_USED_CHOICE_2("Which NOAC drug used? (choice=2)", FieldPattern.CHECKED), //N2
   WHICH_NOAC_DRUG_USED_CHOICE_3("Which NOAC drug used? (choice=3)", FieldPattern.CHECKED), //N2
   WHICH_NOAC_DRUG_USED_CHOICE_4("Which NOAC drug used? (choice=4)", FieldPattern.CHECKED), //N2
+  // end group
+  
   EGFR_30_ML_MIN_1_73M_2("eGFR < 30 ml/min/1.73m^2", FieldPattern.YESNONA), //W3, W4, W5, W6, W7
   EGFR_AT_EMBOLIC_EVENT("eGFR at Embolic event", FieldPattern.DECIMAL), //W3, W4, W5, W6, W7
   ASPIRIN_DAILY_DOSE_MG_DAY("Aspirin Daily Dose (mg/day)", FieldPattern.DECIMAL), //C2
@@ -198,6 +217,8 @@ public enum Field {
   NSAIDS_DAILY_DOSE_MG_DAY("NSAIDs Daily Dose (mg/day)", FieldPattern.DECIMAL), //C2
   NSAIDS_PRN_DOSE_MG_DAY("NSAIDs PRN Dose (mg/day)", FieldPattern.DECIMAL), //C2
   VARIOUS_CHOLESTEROL_MEASUREMENT_TOTAL_LDL_HDL_ETC("Various cholesterol measurement (total, LDL, HDL, etc.)", FieldPattern.ANY), //C8
+  
+  // Calculated columns, not from original data source files
   TIME_TO_BLEEDING_EVENT("Time to Bleeding Event (in days)", FieldPattern.DECIMAL),
   TIME_TO_MACE("Time to MACE (in days)", FieldPattern.DECIMAL),
   TIME_TO_STEMI("Time to first STEMI (in days)", FieldPattern.DECIMAL),
@@ -213,6 +234,7 @@ public enum Field {
   DURATION_FOLLOWUP("Calculated Duration of follow-up (in days)", FieldPattern.DECIMAL),
   TIME_TO_EMBOLIC_EVENT("Time to Embolic Event (in days)", FieldPattern.DECIMAL),
   TIME_TO_BLOOD_DRAW("Time to blood draw (in hours)", FieldPattern.DECIMAL),
+  // end calculated columns
   ;
   
   private String displayName;
