@@ -1,6 +1,7 @@
 package org.pharmgkb.account.file;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.LinkedListMultimap;
+import com.google.common.collect.Multimap;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
@@ -12,6 +13,7 @@ import org.pharmgkb.account.data.FieldPattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,13 +35,39 @@ import static org.pharmgkb.account.data.FieldPattern.isMissing;
 public abstract class AbstractDataFile {
   private static final Logger sf_logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
   private static final ResourceBundle sf_descriptions = ResourceBundle.getBundle("fields");
+
   private List<CSVRecord> m_records = new ArrayList<>();
+  private Multimap<Field, Integer> fieldIndexMap = LinkedListMultimap.create();
 
   abstract Field[] getExpectedFields();
-  
   abstract Map<Field, Field> getCalculationMap();
-  
   abstract String getOutputFilename();
+  
+  AbstractDataFile() {
+    for (int i = 0; i < getExpectedFields().length; i++) {
+      fieldIndexMap.put(getExpectedFields()[i], i);
+    }
+  }
+  
+  private String getRecordValue(@Nonnull CSVRecord record, @Nonnull Field field) {
+    if (!fieldIndexMap.containsKey(field)) {
+      throw new RuntimeException("Field not in dataset " + field);
+    }
+    Collection<Integer> indexes = fieldIndexMap.get(field);
+    return record.get(indexes.iterator().next());
+  }
+  
+  List<String> getRecordValues(@Nonnull CSVRecord record, @Nonnull Field field) {
+    if (!fieldIndexMap.containsKey(field)) {
+      throw new RuntimeException("Field not in dataset " + field);
+    }
+    
+    List<String> results = new ArrayList<>();
+    for (Integer idx : fieldIndexMap.get(field)) {
+      results.add(record.get(idx));
+    }
+    return results;
+  }
 
   public Path makeProcessedFile() throws Exception {
     Path outputPath = Paths.get("out", getOutputFilename());
@@ -158,12 +186,8 @@ public abstract class AbstractDataFile {
   }
   
   private Optional<Long> diffFromEnrollment(CSVRecord record, String dateString) {
-    List<Field> possibleFieldList = Lists.newArrayList(getExpectedFields());
-
-    int enrollmentIdx = possibleFieldList.indexOf(Field.ENROLLMENT_DATE);
-
     Date bleedingEvent = FieldPattern.parseDate(dateString);
-    Date enrollment = FieldPattern.parseDate(record.get(enrollmentIdx));
+    Date enrollment = FieldPattern.parseDate(getRecordValue(record, Field.ENROLLMENT_DATE));
 
     if (bleedingEvent != null && enrollment != null) {
       return Optional.of((bleedingEvent.getTime() - enrollment.getTime()) / DateUtils.MILLIS_PER_DAY);
@@ -173,17 +197,11 @@ public abstract class AbstractDataFile {
   }
 
   private Optional<String> timeToBloodDraw(CSVRecord record) {
-    List<Field> possibleFieldList = Lists.newArrayList(getExpectedFields());
-
-    int doseDateIdx = possibleFieldList.indexOf(Field.DATE_OF_LAST_DOSE);
-    int doseTimeIdx = possibleFieldList.indexOf(Field.TIME_OF_LAST_DOSE);
-    String doseDate = record.get(doseDateIdx);
-    String doseTime = record.get(doseTimeIdx);
+    String doseDate = getRecordValue(record, Field.DATE_OF_LAST_DOSE);
+    String doseTime = getRecordValue(record, Field.TIME_OF_LAST_DOSE);
     
-    int drawDateIdx = possibleFieldList.indexOf(Field.DATE_OF_BLOOD_DRAW);
-    int drawTimeIdx = possibleFieldList.indexOf(Field.TIME_OF_BLOOD_DRAW);
-    String drawDate = record.get(drawDateIdx);
-    String drawTime = record.get(drawTimeIdx);
+    String drawDate = getRecordValue(record, Field.DATE_OF_BLOOD_DRAW);
+    String drawTime = getRecordValue(record, Field.TIME_OF_BLOOD_DRAW);
     
     if ( isMissing(doseDate) || isMissing(doseTime) || isMissing(drawDate) || isMissing(drawTime)) return Optional.empty();
 

@@ -1,10 +1,7 @@
 package org.pharmgkb.account.file;
 
 import org.pharmgkb.account.data.Field;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.lang.invoke.MethodHandles;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +12,6 @@ import java.util.Map;
  * @author Ryan Whaley
  */
 public class ClopidogrelDataFile extends AbstractDataFile {
-  private static final Logger sf_logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
   private static final String OUTPUT_FILE = "account_clopidogrel_processed.csv";
   public static final Field[] FIELDS = new org.pharmgkb.account.data.Field[]{
       Field.STUDY_ID_PHARMGKB_ID,
@@ -274,6 +270,7 @@ public class ClopidogrelDataFile extends AbstractDataFile {
   }
 
   public ClopidogrelDataFile(Path filePath) {
+    super();
     setFilePath(filePath);
   }
 
@@ -291,6 +288,4 @@ public class ClopidogrelDataFile extends AbstractDataFile {
   String getOutputFilename() {
     return OUTPUT_FILE;
   }
-  
-  
 }

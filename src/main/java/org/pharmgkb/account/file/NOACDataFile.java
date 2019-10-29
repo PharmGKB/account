@@ -156,6 +156,7 @@ public class NOACDataFile extends AbstractDataFile {
   }
   
   public NOACDataFile(Path filePath) {
+    super();
     setFilePath(filePath);
   }
 

@@ -191,6 +191,7 @@ public class WarfarinDataFile extends AbstractDataFile {
   }
   
   public WarfarinDataFile(Path filePath) {
+    super();
     setFilePath(filePath);
   }
   
