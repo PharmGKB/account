@@ -2,6 +2,8 @@ package org.pharmgkb.account.file;
 
 import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
+import org.apache.commons.collections4.Bag;
+import org.apache.commons.collections4.bag.HashBag;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
@@ -36,6 +38,7 @@ public abstract class AbstractDataFile {
   private static final Logger sf_logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
   private static final ResourceBundle sf_descriptions = ResourceBundle.getBundle("fields");
   private static final String CHECKED = "Checked";
+  private static final String LIST_SEPARATOR = "; ";
 
   private List<CSVRecord> m_records = new ArrayList<>();
   private Multimap<Field, Integer> fieldIndexMap = LinkedListMultimap.create();
@@ -68,65 +71,67 @@ public abstract class AbstractDataFile {
 
   private List<String> makeOutputRow(CSVRecord record) {
     List<String> cells = new ArrayList<>();
+    Bag<Field> fieldBag = new HashBag<>();
 
     for (Field field : getOutputFields()) {
+      int seenCount = fieldBag.getCount(field);
       List<String> indications = new ArrayList<>();
 
       switch (field) {
         case TIME_TO_BLEEDING_EVENT:
-          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_BLEEDING_EVENT)).map(String::valueOf).orElse(""));
+          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_BLEEDING_EVENT, seenCount)).map(String::valueOf).orElse(""));
           break;
         case TIME_TO_DEATH:
-          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_DEATH)).map(String::valueOf).orElse(""));
+          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_DEATH, seenCount)).map(String::valueOf).orElse(""));
           break;
         case TIME_TO_EMBOLIC_EVENT:
-          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_EMBOLIC_EVENT)).map(String::valueOf).orElse(""));
+          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_EMBOLIC_EVENT, seenCount)).map(String::valueOf).orElse(""));
           break;
         case DURATION_FOLLOWUP:
-          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_LAST_FOLLOW_UP)).map(String::valueOf).orElse(""));
+          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_LAST_FOLLOW_UP, seenCount)).map(String::valueOf).orElse(""));
           break;
         case TIME_TO_MACE:
-          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_MACE)).map(String::valueOf).orElse(""));
+          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_MACE, seenCount)).map(String::valueOf).orElse(""));
           break;
         case TIME_TO_STEMI:
-          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_THE_FIRST_STEMI)).map(String::valueOf).orElse(""));
+          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_THE_FIRST_STEMI, seenCount)).map(String::valueOf).orElse(""));
           break;
         case TIME_TO_NSTEMI:
-          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_THE_FIRST_NSTEMI)).map(String::valueOf).orElse(""));
+          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_THE_FIRST_NSTEMI, seenCount)).map(String::valueOf).orElse(""));
           break;
         case TIME_TO_ANGINA:
-          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_THE_FIRST_UNSTABLE_ANGINA_DURING_FOLLOW_UP)).map(String::valueOf).orElse(""));
+          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_THE_FIRST_UNSTABLE_ANGINA_DURING_FOLLOW_UP, seenCount)).map(String::valueOf).orElse(""));
           break;
         case TIME_TO_THROMB:
-          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_THROMBOSIS)).map(String::valueOf).orElse(""));
+          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_THROMBOSIS, seenCount)).map(String::valueOf).orElse(""));
           break;
         case TIME_TO_CARD_DEATH:
-          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_CARDIAC_DEATH)).map(String::valueOf).orElse(""));
+          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_CARDIAC_DEATH, seenCount)).map(String::valueOf).orElse(""));
           break;
         case TIME_TO_MI:
-          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_THE_FIRST_MI)).map(String::valueOf).orElse(""));
+          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_THE_FIRST_MI, seenCount)).map(String::valueOf).orElse(""));
           break;
         case TIME_TO_ACS:
-          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_THE_FIRST_ACS)).map(String::valueOf).orElse(""));
+          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_THE_FIRST_ACS, seenCount)).map(String::valueOf).orElse(""));
           break;
         case TIME_TO_ISC_STROKE:
-          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_ISCHEMIC_STROKE)).map(String::valueOf).orElse(""));
+          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_ISCHEMIC_STROKE, seenCount)).map(String::valueOf).orElse(""));
           break;
         case TIME_TO_HEM_STROKE:
-          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_HEMORRHAGIC_STROKE)).map(String::valueOf).orElse(""));
+          cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_HEMORRHAGIC_STROKE, seenCount)).map(String::valueOf).orElse(""));
           break;
         case TIME_TO_BLOOD_DRAW:
           cells.add(timeToBloodDraw(record).map(String::valueOf).orElse(""));
           break;
         case EMBOLIC_EVENT:
-          if (isChecked(record, Field.EMBOLIC_EVENT_CHOICE_0)) indications.add("None");
-          if (isChecked(record, Field.EMBOLIC_EVENT_CHOICE_1)) indications.add("Stroke");
-          if (isChecked(record, Field.EMBOLIC_EVENT_CHOICE_2)) indications.add("DVT");
-          if (isChecked(record, Field.EMBOLIC_EVENT_CHOICE_3)) indications.add("PE");
-          if (isChecked(record, Field.EMBOLIC_EVENT_CHOICE_4)) indications.add("DVT/PE");
-          if (isChecked(record, Field.EMBOLIC_EVENT_CHOICE_5)) indications.add("Myocardial Infarction");
-          if (isChecked(record, Field.EMBOLIC_EVENT_CHOICE_MD)) indications.add(FieldPattern.MISSING_DATA);
-          cells.add(String.join(";", indications));
+          if (isChecked(record, Field.EMBOLIC_EVENT_CHOICE_0, seenCount)) indications.add("None");
+          if (isChecked(record, Field.EMBOLIC_EVENT_CHOICE_1, seenCount)) indications.add("Stroke");
+          if (isChecked(record, Field.EMBOLIC_EVENT_CHOICE_2, seenCount)) indications.add("DVT");
+          if (isChecked(record, Field.EMBOLIC_EVENT_CHOICE_3, seenCount)) indications.add("PE");
+          if (isChecked(record, Field.EMBOLIC_EVENT_CHOICE_4, seenCount)) indications.add("DVT/PE");
+          if (isChecked(record, Field.EMBOLIC_EVENT_CHOICE_5, seenCount)) indications.add("Myocardial Infarction");
+          if (isChecked(record, Field.EMBOLIC_EVENT_CHOICE_MD, seenCount)) indications.add(FieldPattern.MISSING_DATA);
+          cells.add(String.join(LIST_SEPARATOR, indications));
           break;
         case INDICATION_FOR_CLOPIDOGREL_TREATMENT:
           if (isChecked(record, Field.INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_1)) indications.add("Coronary artery disease");
@@ -134,7 +139,7 @@ public abstract class AbstractDataFile {
           if (isChecked(record, Field.INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_3)) indications.add("Ischemic stroke");
           if (isChecked(record, Field.INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_4)) indications.add("Acute cornary syndrome");
           if (isChecked(record, Field.INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_5)) indications.add("Other");
-          cells.add(String.join(";", indications));
+          cells.add(String.join(LIST_SEPARATOR, indications));
           break;
         case INDICATION_FOR_NOAC_TREATMENT:
           if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_1)) indications.add("DVT");
@@ -143,7 +148,7 @@ public abstract class AbstractDataFile {
           if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_4)) indications.add("Atrial Fiberlation");
           if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_5)) indications.add("Other");
           if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_MD)) indications.add(FieldPattern.MISSING_DATA);
-          cells.add(String.join(";", indications));
+          cells.add(String.join(LIST_SEPARATOR, indications));
           break;
         case INDICATION_FOR_WARFARIN_TREATMENT:
           if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_1)) indications.add("DVT");
@@ -155,18 +160,34 @@ public abstract class AbstractDataFile {
           if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_7)) indications.add("Post-Orthopedic");
           if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_8)) indications.add("Other");
           if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_MD)) indications.add(FieldPattern.MISSING_DATA);
-          cells.add(String.join(";", indications));
+          cells.add(String.join(LIST_SEPARATOR, indications));
           break;
         case WHICH_NOAC_DRUG_USED:
           if (isChecked(record, Field.WHICH_NOAC_DRUG_USED_CHOICE_1)) indications.add("apixaban");
           if (isChecked(record, Field.WHICH_NOAC_DRUG_USED_CHOICE_2)) indications.add("rivaroxaban");
           if (isChecked(record, Field.WHICH_NOAC_DRUG_USED_CHOICE_3)) indications.add("edoxaban");
           if (isChecked(record, Field.WHICH_NOAC_DRUG_USED_CHOICE_4)) indications.add("dabigatran");
-          cells.add(String.join(";", indications));
+          cells.add(String.join(LIST_SEPARATOR, indications));
+          break;
+        case CARDIAC_DEATH:
+          switch (getRecordValue(record, Field.CARDIAC_DEATH)) {
+            case "1":
+              cells.add("Y");
+              break;
+            case "0":
+              cells.add("N");
+              break;
+            case "MD":
+              cells.add("MD");
+              break;
+            default:
+              cells.add("");
+          }
           break;
         default:
-          cells.add(getRecordValue(record, field));
+          cells.add(getRecordValue(record, field, seenCount));
       }
+      fieldBag.add(field);
     }
 
     return cells;
@@ -180,7 +201,7 @@ public abstract class AbstractDataFile {
     return record.get(indexes.iterator().next());
   }
   
-  List<String> getRecordValues(@Nonnull CSVRecord record, @Nonnull Field field) {
+  private List<String> getRecordValues(@Nonnull CSVRecord record, @Nonnull Field field) {
     if (!fieldIndexMap.containsKey(field)) {
       throw new RuntimeException("Field not in dataset " + field);
     }
@@ -190,6 +211,22 @@ public abstract class AbstractDataFile {
       results.add(record.get(idx));
     }
     return results;
+  }
+  
+  private String getRecordValue(@Nonnull CSVRecord record, @Nonnull Field field, int groupNumber) {
+    if (!fieldIndexMap.containsKey(field)) {
+      throw new RuntimeException("Field not in dataset " + field);
+    }
+    
+    int n=0;
+    for (Integer idx : fieldIndexMap.get(field)) {
+      if (groupNumber == n) {
+        return record.get(idx);
+      } else {
+        n += 1;
+      }
+    }
+    return "";
   }
 
   public Path makeProcessedFile() throws Exception {
@@ -307,6 +344,10 @@ public abstract class AbstractDataFile {
   
   private boolean isChecked(CSVRecord record, Field field) {
     return StringUtils.equals(getRecordValue(record, field), CHECKED);
+  }
+  
+  private boolean isChecked(CSVRecord record, Field field, int count) {
+    return StringUtils.equals(getRecordValue(record, field, count), CHECKED);
   }
 
   private static String getDescription(String key) {
