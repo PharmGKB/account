@@ -134,39 +134,39 @@ public abstract class AbstractDataFile {
           cells.add(String.join(LIST_SEPARATOR, indications));
           break;
         case INDICATION_FOR_CLOPIDOGREL_TREATMENT:
-          if (isChecked(record, Field.INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_1)) indications.add("Coronary artery disease");
-          if (isChecked(record, Field.INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_2)) indications.add("Peripheral arterial disease");
-          if (isChecked(record, Field.INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_3)) indications.add("Ischemic stroke");
-          if (isChecked(record, Field.INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_4)) indications.add("Acute cornary syndrome");
-          if (isChecked(record, Field.INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_5)) indications.add("Other");
+          if (isChecked(record, Field.INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_1, seenCount)) indications.add("Coronary artery disease");
+          if (isChecked(record, Field.INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_2, seenCount)) indications.add("Peripheral arterial disease");
+          if (isChecked(record, Field.INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_3, seenCount)) indications.add("Ischemic stroke");
+          if (isChecked(record, Field.INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_4, seenCount)) indications.add("Acute cornary syndrome");
+          if (isChecked(record, Field.INDICATION_FOR_CLOPIDOGREL_TREATMENT_CHOICE_5, seenCount)) indications.add("Other");
           cells.add(String.join(LIST_SEPARATOR, indications));
           break;
         case INDICATION_FOR_NOAC_TREATMENT:
-          if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_1)) indications.add("DVT");
-          if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_2)) indications.add("PE");
-          if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_3)) indications.add("Afib/flutter");
-          if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_4)) indications.add("Atrial Fiberlation");
-          if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_5)) indications.add("Other");
-          if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_MD)) indications.add(FieldPattern.MISSING_DATA);
+          if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_1, seenCount)) indications.add("DVT");
+          if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_2, seenCount)) indications.add("PE");
+          if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_3, seenCount)) indications.add("Afib/flutter");
+          if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_4, seenCount)) indications.add("Atrial Fiberlation");
+          if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_5, seenCount)) indications.add("Other");
+          if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_MD, seenCount)) indications.add(FieldPattern.MISSING_DATA);
           cells.add(String.join(LIST_SEPARATOR, indications));
           break;
         case INDICATION_FOR_WARFARIN_TREATMENT:
-          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_1)) indications.add("DVT");
-          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_2)) indications.add("PE");
-          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_3)) indications.add("Afib/flutter");
-          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_4)) indications.add("Heart Valve");
-          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_5)) indications.add("Cardiomyopathy/LV Dilation");
-          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_6)) indications.add("Stroke");
-          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_7)) indications.add("Post-Orthopedic");
-          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_8)) indications.add("Other");
-          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_MD)) indications.add(FieldPattern.MISSING_DATA);
+          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_1, seenCount)) indications.add("DVT");
+          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_2, seenCount)) indications.add("PE");
+          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_3, seenCount)) indications.add("Afib/flutter");
+          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_4, seenCount)) indications.add("Heart Valve");
+          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_5, seenCount)) indications.add("Cardiomyopathy/LV Dilation");
+          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_6, seenCount)) indications.add("Stroke");
+          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_7, seenCount)) indications.add("Post-Orthopedic");
+          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_8, seenCount)) indications.add("Other");
+          if (isChecked(record, Field.INDICATION_FOR_WARFARIN_TREATMENT_CHOICE_MD, seenCount)) indications.add(FieldPattern.MISSING_DATA);
           cells.add(String.join(LIST_SEPARATOR, indications));
           break;
         case WHICH_NOAC_DRUG_USED:
-          if (isChecked(record, Field.WHICH_NOAC_DRUG_USED_CHOICE_1)) indications.add("apixaban");
-          if (isChecked(record, Field.WHICH_NOAC_DRUG_USED_CHOICE_2)) indications.add("rivaroxaban");
-          if (isChecked(record, Field.WHICH_NOAC_DRUG_USED_CHOICE_3)) indications.add("edoxaban");
-          if (isChecked(record, Field.WHICH_NOAC_DRUG_USED_CHOICE_4)) indications.add("dabigatran");
+          if (isChecked(record, Field.WHICH_NOAC_DRUG_USED_CHOICE_1, seenCount)) indications.add("apixaban");
+          if (isChecked(record, Field.WHICH_NOAC_DRUG_USED_CHOICE_2, seenCount)) indications.add("rivaroxaban");
+          if (isChecked(record, Field.WHICH_NOAC_DRUG_USED_CHOICE_3, seenCount)) indications.add("edoxaban");
+          if (isChecked(record, Field.WHICH_NOAC_DRUG_USED_CHOICE_4, seenCount)) indications.add("dabigatran");
           cells.add(String.join(LIST_SEPARATOR, indications));
           break;
         case CARDIAC_DEATH:
@@ -199,18 +199,6 @@ public abstract class AbstractDataFile {
     }
     Collection<Integer> indexes = fieldIndexMap.get(field);
     return record.get(indexes.iterator().next());
-  }
-  
-  private List<String> getRecordValues(@Nonnull CSVRecord record, @Nonnull Field field) {
-    if (!fieldIndexMap.containsKey(field)) {
-      throw new RuntimeException("Field not in dataset " + field);
-    }
-    
-    List<String> results = new ArrayList<>();
-    for (Integer idx : fieldIndexMap.get(field)) {
-      results.add(record.get(idx));
-    }
-    return results;
   }
   
   private String getRecordValue(@Nonnull CSVRecord record, @Nonnull Field field, int groupNumber) {
@@ -340,10 +328,6 @@ public abstract class AbstractDataFile {
       sf_logger.warn("Could not parse DateTime", ex);
       return Optional.empty();
     }
-  }
-  
-  private boolean isChecked(CSVRecord record, Field field) {
-    return StringUtils.equals(getRecordValue(record, field), CHECKED);
   }
   
   private boolean isChecked(CSVRecord record, Field field, int count) {
