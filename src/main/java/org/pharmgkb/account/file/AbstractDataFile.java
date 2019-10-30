@@ -144,7 +144,7 @@ public abstract class AbstractDataFile {
         case INDICATION_FOR_NOAC_TREATMENT:
           if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_1, seenCount)) indications.add("DVT");
           if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_2, seenCount)) indications.add("PE");
-          if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_3, seenCount)) indications.add("Afib/flutter");
+          if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_3, seenCount)) indications.add("DVT/PE");
           if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_4, seenCount)) indications.add("Atrial Fiberlation");
           if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_5, seenCount)) indications.add("Other");
           if (isChecked(record, Field.INDICATION_FOR_NOAC_TREATMENT_CHOICE_MD, seenCount)) indications.add(FieldPattern.MISSING_DATA);
