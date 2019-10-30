@@ -234,6 +234,11 @@ public enum Field {
   DURATION_FOLLOWUP("Calculated Duration of follow-up (in days)", FieldPattern.DECIMAL),
   TIME_TO_EMBOLIC_EVENT("Time to Embolic Event (in days)", FieldPattern.DECIMAL),
   TIME_TO_BLOOD_DRAW("Time to blood draw (in hours)", FieldPattern.DECIMAL),
+  EMBOLIC_EVENT("Embolic Event", FieldPattern.ANY),
+  INDICATION_FOR_NOAC_TREATMENT("Indication for NOAC Treatment", FieldPattern.ANY),
+  WHICH_NOAC_DRUG_USED("Which NOAC Drug Used", FieldPattern.ANY),
+  INDICATION_FOR_CLOPIDOGREL_TREATMENT("Indication for Clopidogrel Treatment", FieldPattern.ANY),
+  INDICATION_FOR_WARFARIN_TREATMENT("Indication for Warfarin Treatment", FieldPattern.ANY),
   // end calculated columns
   ;
   

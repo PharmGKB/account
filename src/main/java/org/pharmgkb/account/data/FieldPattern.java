@@ -27,7 +27,7 @@ public class FieldPattern {
   static final String TIME_OF_DAY = "(\\d{1,2}(:\\d{2})?\\s*(am|AM|pm|PM)|\\d{2}:\\d{2}|MD)";
   static final String DAYS = "([\\d,]+|MD)";
 
-  static final String MISSING_DATA = "MD";
+  public static final String MISSING_DATA = "MD";
   static final Pattern MD_SYNONYMS = Pattern.compile("(n/a|na|unk|unknown)");
   private static final Pattern DATE_PATTERN = Pattern.compile(DATE);
   
