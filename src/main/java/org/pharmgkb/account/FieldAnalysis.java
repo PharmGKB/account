@@ -12,6 +12,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
+import org.pharmgkb.account.data.Field;
 import org.pharmgkb.account.file.ClopidogrelDataFile;
 import org.pharmgkb.account.file.NOACDataFile;
 import org.pharmgkb.account.file.WarfarinDataFile;
@@ -25,9 +26,7 @@ import java.lang.invoke.MethodHandles;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
 
 /**
  * Analyze all the CSV files' header rows to see what columns exist
@@ -76,6 +75,8 @@ public class FieldAnalysis {
     gatherFields(this.clopidogrelPath, "C");
     gatherFields(this.noacPath, "N");
     gatherFields(this.warfarinPath, "W");
+    
+    writeFieldChanges();
 
     StringJoiner fieldJoiner = new StringJoiner("\n");
     for (String key : fieldLocationMap.keySet()) {
@@ -133,6 +134,36 @@ public class FieldAnalysis {
     else {
       sf_logger.info("-- column count constant, keep calm");
     }
+  }
+  
+  private void writeFieldChanges() {
+    System.out.println();
+    SortedSet<Field> clopidogrelInputFields = new TreeSet<>(Arrays.asList(ClopidogrelDataFile.FIELDS));
+    Set<Field> clopidogrelOutputFields = new HashSet<>(Arrays.asList(ClopidogrelDataFile.OUTPUT_FIELDS));
+    clopidogrelInputFields.removeAll(clopidogrelOutputFields);
+    System.out.println("Fields removed from clopidogrel file:");
+    for (Field field : clopidogrelInputFields) {
+      System.out.println(field.name());
+    }
+
+    System.out.println();
+    SortedSet<Field> noacInputFields = new TreeSet<>(Arrays.asList(NOACDataFile.FIELDS));
+    Set<Field> noacOutputFields = new HashSet<>(Arrays.asList(NOACDataFile.OUTPUT_FIELDS));
+    noacInputFields.removeAll(noacOutputFields);
+    System.out.println("Fields removed from NOAC file:");
+    for (Field field : noacInputFields) {
+      System.out.println(field.name());
+    }
+
+    System.out.println();
+    SortedSet<Field> warfarinInputFields = new TreeSet<>(Arrays.asList(WarfarinDataFile.FIELDS));
+    Set<Field> warfarinOutputFields = new HashSet<>(Arrays.asList(WarfarinDataFile.OUTPUT_FIELDS));
+    warfarinInputFields.removeAll(warfarinOutputFields);
+    System.out.println("Fields removed from warfarin file:");
+    for (Field field : warfarinInputFields) {
+      System.out.println(field.name());
+    }
+    System.out.println();
   }
 
   private static String makeEnumName(String title) {

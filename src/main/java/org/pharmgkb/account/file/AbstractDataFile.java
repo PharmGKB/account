@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
+import static org.pharmgkb.account.data.FieldPattern.MISSING_DATA;
 import static org.pharmgkb.account.data.FieldPattern.isMissing;
 
 /**
@@ -182,6 +183,37 @@ public abstract class AbstractDataFile {
               break;
             default:
               cells.add("");
+          }
+          break;
+        case BINNED_AGE:
+          String ageString = getRecordValue(record, Field.AGE_AT_ENROLLMENT, seenCount);
+          if (isMissing(ageString)) {
+            cells.add(MISSING_DATA);
+          }
+          try {
+            Float age = Float.valueOf(ageString);
+            if (age >= 80) {
+              cells.add("80+");
+            } else if (age < 10) {
+              cells.add("0-9");
+            } else if (age < 20) {
+              cells.add("10-19");
+            } else if (age < 30) {
+              cells.add("20-29");
+            } else if (age < 40) {
+              cells.add("30-39");
+            } else if (age < 50) {
+              cells.add("50-59");
+            } else if (age < 60) {
+              cells.add("50-59");
+            } else if (age < 70) {
+              cells.add("60-69");
+            } else if (age < 80) {
+              cells.add("70-79");
+            }
+          } catch (NumberFormatException ex) {
+            sf_logger.warn("Bad age number: " + ageString, ex);
+            cells.add("BAD VALUE");
           }
           break;
         default:
