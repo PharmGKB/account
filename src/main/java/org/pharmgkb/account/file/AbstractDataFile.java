@@ -192,24 +192,10 @@ public abstract class AbstractDataFile {
           }
           try {
             Float age = Float.valueOf(ageString);
-            if (age >= 80) {
-              cells.add("80+");
-            } else if (age < 10) {
-              cells.add("0-9");
-            } else if (age < 20) {
-              cells.add("10-19");
-            } else if (age < 30) {
-              cells.add("20-29");
-            } else if (age < 40) {
-              cells.add("30-39");
-            } else if (age < 50) {
-              cells.add("50-59");
-            } else if (age < 60) {
-              cells.add("50-59");
-            } else if (age < 70) {
-              cells.add("60-69");
-            } else if (age < 80) {
-              cells.add("70-79");
+            if (age >= 90) {
+              cells.add("90+");
+            } else {
+              cells.add(ageString);
             }
           } catch (NumberFormatException ex) {
             sf_logger.warn("Bad age number: " + ageString, ex);
