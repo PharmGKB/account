@@ -239,7 +239,7 @@ public enum Field {
   WHICH_NOAC_DRUG_USED("Which NOAC Drug Used", FieldPattern.ANY),
   INDICATION_FOR_CLOPIDOGREL_TREATMENT("Indication for Clopidogrel Treatment", FieldPattern.ANY),
   INDICATION_FOR_WARFARIN_TREATMENT("Indication for Warfarin Treatment", FieldPattern.ANY),
-  BINNED_AGE("Binned Age at enrollment", FieldPattern.ANY),
+  BINNED_AGE("Age at enrollment (with over 89 binning)", FieldPattern.ANY),
   // end calculated columns
   ;
   
