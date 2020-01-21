@@ -10,6 +10,7 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.apache.commons.lang3.StringUtils;
 import org.pharmgkb.account.data.Field;
@@ -19,6 +20,7 @@ import org.pharmgkb.account.file.WarfarinDataFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -39,9 +41,10 @@ public class FieldAnalysis {
   private Path clopidogrelPath;
   private Path noacPath;
   private Path warfarinPath;
+  private Path fieldsPath;
   private Multimap<String, String> fieldLocationMap = TreeMultimap.create();
   
-  private FieldAnalysis(Path clopidogrelPath, Path noacPath, Path warfarinPath) {
+  private FieldAnalysis(Path clopidogrelPath, Path noacPath, Path warfarinPath, Path fieldsPath) {
     Preconditions.checkArgument(clopidogrelPath.toFile().exists());
     Preconditions.checkArgument(noacPath.toFile().exists());
     Preconditions.checkArgument(warfarinPath.toFile().exists());
@@ -49,6 +52,7 @@ public class FieldAnalysis {
     this.clopidogrelPath = clopidogrelPath;
     this.noacPath = noacPath;
     this.warfarinPath = warfarinPath;
+    this.fieldsPath = fieldsPath;
   }
 
   public static void main(String[] args) {
@@ -57,13 +61,15 @@ public class FieldAnalysis {
     o.addOption("c", "clopidogrel-file", true, "File of clopidogrel field names");
     o.addOption("n", "noac-file", true, "File of NOAC field names");
     o.addOption("w", "warfarin-file", true, "File of warfarin field names");
+    o.addOption("f", "fields-list", true, "List of all fields in the output file");
     
     try {
       CommandLine cli = cliParser.parse(o, args);
       FieldAnalysis fieldAnalysis = new FieldAnalysis(
           Paths.get(cli.getOptionValue("c")),
           Paths.get(cli.getOptionValue("n")),
-          Paths.get(cli.getOptionValue("w"))
+          Paths.get(cli.getOptionValue("w")),
+          Paths.get(cli.getOptionValue("f"))
       );
       fieldAnalysis.execute();
     } catch (Exception e) {
@@ -137,6 +143,32 @@ public class FieldAnalysis {
   }
   
   private void writeFieldChanges() {
+    Multimap<Field, String> allOutputFields = TreeMultimap.create();
+    Arrays.stream(ClopidogrelDataFile.OUTPUT_FIELDS).forEach(f -> allOutputFields.put(f, "Clopidogrel"));
+    Arrays.stream(NOACDataFile.OUTPUT_FIELDS).forEach(f -> allOutputFields.put(f, "NOAC"));
+    Arrays.stream(WarfarinDataFile.OUTPUT_FIELDS).forEach(f -> allOutputFields.put(f, "Warfarin"));
+
+    try (
+        FileWriter fileWriter = new FileWriter(this.fieldsPath.toFile());
+        CSVPrinter csv = new CSVPrinter(fileWriter, CSVFormat.EXCEL)
+    ) {
+      csv.print("Field Title");
+      csv.print("In Clopidogrel File");
+      csv.print("In NOAC File");
+      csv.print("In Warfarin File");
+      csv.println();
+      for (Field key : allOutputFields.keySet()) {
+        Collection<String> files = allOutputFields.get(key);
+        csv.print(key.getDisplayName());
+        csv.print(files.contains("Clopidogrel") ? "Clopidogrel" : "");
+        csv.print(files.contains("NOAC") ? "NOAC" : "");
+        csv.print(files.contains("Warfarin") ? "Warfarin" : "");
+        csv.println();
+      }
+    } catch (IOException ex) {
+      sf_logger.error("Error writing output fields", ex);
+    }
+
     System.out.println();
     SortedSet<Field> clopidogrelInputFields = new TreeSet<>(Arrays.asList(ClopidogrelDataFile.FIELDS));
     Set<Field> clopidogrelOutputFields = new HashSet<>(Arrays.asList(ClopidogrelDataFile.OUTPUT_FIELDS));
