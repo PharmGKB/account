@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,6 +50,59 @@ public class FieldPattern {
   }
   
   public static boolean isMissing(String value) {
-    return StringUtils.isBlank(value) || value.equals(MISSING_DATA);
+    String strippedValue = StringUtils.strip(value);
+    return StringUtils.isBlank(strippedValue) ||
+        strippedValue.equals(MISSING_DATA) ||
+        MD_SYNONYMS.matcher(strippedValue.toLowerCase()).matches();
   }
+  
+  static final Predicate<String> ACETA_DOSE_RANGE = (v) -> {
+    Float value = Float.valueOf(v);
+    return value >= 325 && value <= 4000;
+  };
+
+  static final Predicate<String> AGE_RANGE = (v) -> {
+    Float value = Float.valueOf(v);
+    return value >= 18;
+  };
+  
+  static final Predicate<String> ASPIRIN_DOSE_RANGE = (v) -> {
+    Float value = Float.valueOf(v);
+    return value >= 81 && value <= 1500;
+  };
+  
+  static final Predicate<String> HEMATOCRIT_RANGE = (v) -> {
+    Float value = Float.valueOf(v);
+    return value >= 15 && value <= 55;
+  };
+  
+  static final Predicate<String> HEMOGLOBIN_RANGE = (v) -> {
+    Float value = Float.valueOf(v);
+    return value >= 5 && value <= 17;
+  };
+  
+  static final Predicate<String> INR_RANGE = (v) -> {
+    Float value = Float.valueOf(v);
+    return value >= 1 && value <= 7;
+  };
+  
+  static final Predicate<String> NSAID_DOSE_RANGE = (v) -> {
+    Float value = Float.valueOf(v);
+    return value >= 200 && value <= 3200;
+  };
+  
+  static final Predicate<String> PLATELET_RANGE = (v) -> {
+    Float value = Float.valueOf(v.replaceAll(",", ""));
+    return value >= 100 && value <= 450;
+  };
+  
+  static final Predicate<String> RED_CELL_RANGE = (v) -> {
+    Float value = Float.valueOf(v);
+    return value >= 3 && value <= 7;
+  };
+
+  static final Predicate<String> WHITE_CELL_RANGE = (v) -> {
+    Float value = Float.valueOf(v);
+    return value >= 0 && value <= 20;
+  };
 }

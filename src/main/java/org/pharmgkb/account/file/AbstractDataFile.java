@@ -304,7 +304,8 @@ public abstract class AbstractDataFile {
     String siteId = record.get(1);
     for (int i = 0; i < getExpectedFields().length; i++) {
       Field field = getExpectedFields()[i];
-      if (!field.validate(record.get(i))) {
+      String fieldValue = record.get(i);
+      if (!field.validate(fieldValue)) {
         messages.add(String.format("%s\t%s\t%s%d\tinvalid %s\t%s\n",
             siteId,
             subjectId,
@@ -312,6 +313,26 @@ public abstract class AbstractDataFile {
             field.name(),
             record.get(i)
         ));
+      } else {
+        try {
+          if (field.getValueRangePredicate() != null && !isMissing(fieldValue) && !field.getValueRangePredicate().test(fieldValue)) {
+            messages.add(String.format("%s\t%s\t%s%d\tout of range %s\t%s\n",
+                siteId,
+                subjectId,
+                ExcelUtils.getExcelColumnName(i + 1), lineNumber,
+                field.name(),
+                record.get(i)
+            ));
+          }
+        } catch (NumberFormatException ex) {
+          messages.add(String.format("%s\t%s\t%s%d\tbad numerical value for %s\t%s\n",
+              siteId,
+              subjectId,
+              ExcelUtils.getExcelColumnName(i + 1), lineNumber,
+              field.name(),
+              record.get(i)
+          ));
+        }
       }
     }
 
