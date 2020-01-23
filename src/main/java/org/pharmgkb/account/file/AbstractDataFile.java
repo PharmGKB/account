@@ -315,12 +315,13 @@ public abstract class AbstractDataFile {
         ));
       } else {
         try {
-          if (field.getValueRangePredicate() != null && !isMissing(fieldValue) && !field.getValueRangePredicate().test(fieldValue)) {
-            messages.add(String.format("%s\t%s\t%s%d\tout of range %s\t%s\n",
+          if (field.getRangeTest() != null && !isMissing(fieldValue) && !field.getRangeTest().test(fieldValue)) {
+            messages.add(String.format("%s\t%s\t%s%d\tout of range %s [%s]\t%s\n",
                 siteId,
                 subjectId,
                 ExcelUtils.getExcelColumnName(i + 1), lineNumber,
                 field.name(),
+                field.getRangeDescription(),
                 record.get(i)
             ));
           }
