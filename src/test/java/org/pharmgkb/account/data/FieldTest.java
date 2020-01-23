@@ -16,7 +16,7 @@ public class FieldTest {
   
   @Test
   public void testValidation() {
-    testValues(Field.STUDY_ID_PHARMGKB_ID, "PA1", "pa1");
+    testValues(Field.STUDY_ID_PHARMGKB_ID, "PA1", "zzz");
     testValues(Field.PROJECT_SITE, "UofC", "Stanford");
     testValues(Field.GENDER, "F", "OOOOO");
     testValues(Field.ENROLLMENT_DATE, "1/2/17", "1/2/201");
