@@ -160,7 +160,7 @@ public enum Field {
   PATIENT_LOST_TO_FOLLOW_UP("Patient lost to follow up?", FieldPattern.YESNONA), //C3, N3, W3
   PHENYTOIN("Phenytoin", FieldPattern.YESNONA), //C2
   PHENYTOIN_DILANTIN("Phenytoin (Dilantin)", FieldPattern.YESNONA), //W2
-  PLASMA_UREA_MMOL_L("Plasma Urea (mmol/L)", FieldPattern.DECIMAL), //C8
+  PLASMA_UREA_MMOL_L("Plasma Urea (mmol/L)", FieldPattern.DECIMAL),
   PLATELET_COUNT("Platelet count", FieldPattern.DECIMAL, 100, 450), //N8, W8
   PLATELET_COUNT_CELLS_MICROL("Platelet count (cells/microL)", FieldPattern.INTEGER, 100, 450), //C8
   PLATELET_COUNT_CELLS_MICROL_ON_PLAVIX("Platelet count (cells/microL) on Plavix", FieldPattern.INTEGER, 100, 450), //C8
