@@ -41,8 +41,8 @@ public abstract class AbstractDataFile {
   private static final String CHECKED = "Checked";
   private static final String LIST_SEPARATOR = "; ";
 
-  private List<CSVRecord> m_records = new ArrayList<>();
-  private Multimap<Field, Integer> fieldIndexMap = LinkedListMultimap.create();
+  private final List<CSVRecord> m_records = new ArrayList<>();
+  private final Multimap<Field, Integer> fieldIndexMap = LinkedListMultimap.create();
 
   abstract Field[] getExpectedFields();
   abstract Field[] getOutputFields();
@@ -171,7 +171,7 @@ public abstract class AbstractDataFile {
           cells.add(String.join(LIST_SEPARATOR, indications));
           break;
         case CARDIAC_DEATH:
-          switch (getRecordValue(record, Field.CARDIAC_DEATH)) {
+          switch (getRecordValue(record, Field.CARDIAC_DEATH, seenCount)) {
             case "1":
               cells.add("Y");
               break;
@@ -191,7 +191,7 @@ public abstract class AbstractDataFile {
             cells.add(MISSING_DATA);
           }
           try {
-            Float age = Float.valueOf(ageString);
+            float age = Float.parseFloat(ageString);
             if (age >= 90) {
               cells.add("90 and over");
             } else {
