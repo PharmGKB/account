@@ -39,15 +39,15 @@ public class DateUtilsTest {
     LocalDateTime wholeHourDt   = DateUtils.parseDateTime("1/2/2019", "3:00 pm");
     
     String diff = DateUtils.diff(fromDt, toDt);
-    assertEquals("2:38", diff);
+    assertEquals("2.63", diff);
     
     diff = DateUtils.diff(toDt, fromDt);
-    assertEquals("-2:38", diff);
+    assertEquals("-2.63", diff);
     
     diff = DateUtils.diff(fromDt, muchLaterDt);
-    assertEquals("164:11", diff);
+    assertEquals("164.18", diff);
     
     diff = DateUtils.diff(fromDt, wholeHourDt);
-    assertEquals("1:00", diff);
+    assertEquals("1.00", diff);
   }
 }

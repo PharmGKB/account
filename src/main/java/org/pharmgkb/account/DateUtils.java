@@ -30,18 +30,15 @@ public class DateUtils {
   }
 
   /**
-   * Calculates the hours and minutes difference between two {@link LocalDateTime} objects and outputs the result in 
-   * the formate "hours:minutes". This will accommodate negative time frames if the "to" time is before the "from" time.
+   * Calculates the hours difference between two {@link LocalDateTime} objects and outputs the result in as a decimal to
+   * two significant digits. This will accommodate negative time frames if the "to" time is before the "from" time.
    * @param fromDt the beginning of the time frame
    * @param toDt the end of the time frame
-   * @return a String of the time frame length in the format "hourse:minutes"
+   * @return a String of the time frame length in hours to two decimal places
    */
   public static String diff(LocalDateTime fromDt, LocalDateTime toDt) {
-    Duration duration = Duration.between(fromDt, toDt);
-    long secs = duration.getSeconds();
-    long mins = Math.abs((secs / 60) % 60);
-    double hours = secs > 0 ? Math.floor(secs / (60f * 60f)) : Math.ceil(secs / (60f * 60f));
+    double hours = Duration.between(fromDt, toDt).getSeconds() / (60f * 60f);
     
-    return String.format("%.0f:%02d", hours, mins);
+    return String.format("%.2f", hours);
   }
 }
