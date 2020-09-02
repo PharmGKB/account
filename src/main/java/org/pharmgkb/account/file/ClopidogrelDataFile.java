@@ -3,6 +3,7 @@ package org.pharmgkb.account.file;
 import org.pharmgkb.account.data.Field;
 
 import java.nio.file.Path;
+import java.util.Map;
 
 /**
  * The clopidogrel data file
@@ -473,9 +474,10 @@ public class ClopidogrelDataFile extends AbstractDataFile {
       Field.COMPLETE,
   };
 
-  public ClopidogrelDataFile(Path filePath) {
+  public ClopidogrelDataFile(Path filePath, Map<String,String>siteKeyMap) {
     super();
     setFilePath(filePath);
+    setSiteKeyMap(siteKeyMap);
   }
 
   @Override

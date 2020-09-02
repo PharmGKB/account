@@ -3,6 +3,7 @@ package org.pharmgkb.account.file;
 import org.pharmgkb.account.data.Field;
 
 import java.nio.file.Path;
+import java.util.Map;
 
 /**
  * The Warfarin data file
@@ -293,14 +294,15 @@ public class WarfarinDataFile extends AbstractDataFile {
       Field.TIME_TO_DEATH,
       Field.EGFR_30_ML_MIN_1_73M_2,
       Field.COMPLETE,
-      Field.PLATELET_COUNT,
+      Field.PLATELET_COUNT_X10_3_UL,
       Field.HEMOGLOBIN_G_DL,
       Field.COMPLETE,
   };
 
-  public WarfarinDataFile(Path filePath) {
+  public WarfarinDataFile(Path filePath, Map<String,String> siteKeyMap) {
     super();
     setFilePath(filePath);
+    setSiteKeyMap(siteKeyMap);
   }
   
   @Override

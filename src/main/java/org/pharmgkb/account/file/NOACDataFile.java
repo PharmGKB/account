@@ -3,6 +3,7 @@ package org.pharmgkb.account.file;
 import org.pharmgkb.account.data.Field;
 
 import java.nio.file.Path;
+import java.util.Map;
 
 /**
  * The NOAC data file
@@ -219,7 +220,7 @@ public class NOACDataFile extends AbstractDataFile {
       Field.PATIENT_DECEASED,
       Field.TIME_TO_DEATH,
       Field.COMPLETE,
-      Field.PLATELET_COUNT,
+      Field.PLATELET_COUNT_X10_3_UL,
       Field.CREATININE_CLEARANCE_CRCL,
       Field.HEMATOCRIT,
       Field.HEMOGLOBIN_G_DL,
@@ -228,9 +229,10 @@ public class NOACDataFile extends AbstractDataFile {
       Field.COMPLETE,
   };
   
-  public NOACDataFile(Path filePath) {
+  public NOACDataFile(Path filePath, Map<String,String> siteKeyMap) {
     super();
     setFilePath(filePath);
+    setSiteKeyMap(siteKeyMap);
   }
 
   @Override

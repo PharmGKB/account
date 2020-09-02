@@ -169,7 +169,7 @@ public enum Field {
   PRIOR_MI("Prior MI", FieldPattern.YESNONA), //C1
   PRIOR_PCI("Prior PCI", FieldPattern.YESNONA), //C1
   PRIOR_ANGIOPLASTY("Prior angioplasty", FieldPattern.YESNONA), //C1
-  PROJECT_SITE("Project site", "^NU|UIC|UofC|DCVA|GWU$"), //C1, N1, W1
+  PROJECT_SITE("Project site", FieldPattern.ANY), //C1, N1, W1
   PROTON_PUMP_INHIBITORS_PPIS("Proton Pump Inhibitors (PPIs)", "([YN123456]|MD)"), //C2
   PROTON_PUMP_INHIBITORS_PPIS_NAMES("Proton Pump Inhibitors (PPIs)", FieldPattern.ANY), //C2
   RED_CELL_COUNT_X10_6_CELLS_UL("Red cell count (cells/microL)", FieldPattern.DECIMAL, 3, 7), //C8

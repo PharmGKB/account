@@ -79,6 +79,11 @@ public abstract class AbstractDataFile {
       List<String> indications = new ArrayList<>();
 
       switch (field) {
+        case PROJECT_SITE:
+          String key = siteKeyMap.get(getRecordValue(record, Field.PROJECT_SITE));
+          if (StringUtils.isBlank(key)) throw new RuntimeException("Project site not mapped: " + getRecordValue(record, Field.PROJECT_SITE));
+          cells.add(key);
+          break;
         case TIME_TO_BLEEDING_EVENT:
           cells.add(diffFromEnrollment(record, getRecordValue(record, Field.DATE_OF_BLEEDING_EVENT, seenCount)).map(String::valueOf).orElse(""));
           break;
@@ -255,6 +260,7 @@ public abstract class AbstractDataFile {
 
 
   private Path filePath;
+  private Map<String,String> siteKeyMap;
   
   public String getFilename() {
     return this.filePath.getFileName().toString();
@@ -262,6 +268,10 @@ public abstract class AbstractDataFile {
 
   void setFilePath(Path filePath) {
     this.filePath = filePath;
+  }
+
+  void setSiteKeyMap(Map<String,String> siteKeyMap) {
+    this.siteKeyMap = siteKeyMap;
   }
 
   public List<String> validate() throws IOException {
