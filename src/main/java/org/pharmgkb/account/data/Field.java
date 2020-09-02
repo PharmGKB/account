@@ -15,8 +15,8 @@ import java.util.regex.Pattern;
 public enum Field {
 
   ACS_DURING_FOLLOW_UP("ACS during follow up", FieldPattern.YESNONA), //C3, C4, C5, C6, C7
-  ABSOLUTE_WHITE_CELL_COUNT_CELLS_MICROL("Absolute White cell count (cells/microL)", FieldPattern.DECIMAL, 0, 20), //C8
-  ABSOLUTE_WHITE_CELL_COUNT_CELLS_MICROL_ON_PLAVIX("Absolute White cell count (cells/microL) on Plavix", FieldPattern.DECIMAL, 0, 20), //C8
+  ABSOLUTE_WHITE_CELL_COUNT_X10_3_CELLS_UL("Absolute White cell count (cells/microL)", FieldPattern.DECIMAL, 0, 20), //C8
+  ABSOLUTE_WHITE_CELL_COUNT_X10_3_CELLS_UL_ON_PLAVIX("Absolute White cell count (cells/microL) on Plavix", FieldPattern.DECIMAL, 0, 20), //C8
   ACETAMINOPHEN_OR_PARACETAMOL_TYLENOL("Acetaminophen or Paracetamol (Tylenol)", FieldPattern.YESNONA), //C2, N2, W2
   ACETAMINOPHEN_PARACETAMOL_DOSE_MG_DAY      ("Acetaminophen/Paracetamol Dose (mg/day)", FieldPattern.INTEGER, 325, 4000), //C2, N2, W2
   ACETAMINOPHEN_PARACETAMOL_DAILY_DOSE_MG_DAY("Acetaminophen/Paracetamol Daily Dose (mg/day)", FieldPattern.DECIMAL, 325, 4000), //C2
@@ -24,7 +24,7 @@ public enum Field {
   AGE_AT_ENROLLMENT("Age at enrollment", FieldPattern.INTEGER, 18), //C1, N1, W1
   ALCOHOL("Alcohol", "^([01234]|MD)$"), //C1, N1, W1
   AMIODARONE_CORDARONE("Amiodarone (Cordarone)", FieldPattern.YESNONA), //W2
-  ANTI_FACTOR_XA_ACTIVITY("Anti-factor Xa activity", FieldPattern.DECIMAL, 22, 500), //N8
+  ANTI_FACTOR_XA_ACTIVITY_NG_ML("Anti-factor Xa activity (ng/mL)", FieldPattern.DECIMAL, 22, 500), //N8
   ANTI_FUNGAL_AZOLES_INCLUDES_KETOCONAZOLE_FLUCONAZOLE_ITRACONAZOLE_DO_NOT_INCLUDE_OMEPRAZOLE_OR_METRONIDAZOLE("Anti-fungal Azoles (includes ketoconazole, fluconazole, itraconazole; do not include omeprazole or metronidazole)", FieldPattern.YESNONA), //W2
   APPROXIMATE_TIME_ON_THERAPY_AT_ENROLLMENT("Approximate time on therapy at enrollment", FieldPattern.DAYS), //C2, N2, W2
   ASPIRIN("Aspirin", FieldPattern.YESNONA), //C2, N2, W2
@@ -68,7 +68,7 @@ public enum Field {
   DATE_OF_THE_FIRST_UNSTABLE_ANGINA_DURING_FOLLOW_UP("Date of the first unstable angina during follow up", FieldPattern.DATE), //C3, C4, C5, C6, C7
   DATE_OF_THROMBOSIS("Date of thrombosis", FieldPattern.DATE), //C3, C4, C5, C6, C7
   DIABETES("Diabetes", "^([012]|MD)$"), //C1, N1, W1
-  DILUTED_T_TIME_MEASUREMENT_DABIGATRAN("Diluted T time measurement (dabigatran)", FieldPattern.DECIMAL, 50, 250), //N8
+  DILUTED_T_TIME_MEASUREMENT_DABIGATRAN_SECS("Diluted T time measurement (dabigatran) (secs)", FieldPattern.DECIMAL, 50, 250), //N8
   DIPYRIDAMOLE("Dipyridamole", FieldPattern.YESNONA), //W2
   DURATION_OF_FOLLOW_UP("Duration of follow up", FieldPattern.DAYS), //C3, C4, C5, C6, C7, N3, N4, N5, N6, N7, W3, W4, W5, W6, W7
   EFAVIRENZ("Efavirenz", FieldPattern.YESNONA), //C2
@@ -162,8 +162,8 @@ public enum Field {
   PHENYTOIN_DILANTIN("Phenytoin (Dilantin)", FieldPattern.YESNONA), //W2
   PLASMA_UREA_MMOL_L("Plasma Urea (mmol/L)", FieldPattern.DECIMAL),
   PLATELET_COUNT("Platelet count", FieldPattern.DECIMAL, 100, 450), //N8, W8
-  PLATELET_COUNT_CELLS_MICROL("Platelet count (cells/microL)", FieldPattern.INTEGER, 100, 450), //C8
-  PLATELET_COUNT_CELLS_MICROL_ON_PLAVIX("Platelet count (cells/microL) on Plavix", FieldPattern.INTEGER, 100, 450), //C8
+  PLATELET_COUNT_X10_3_UL("Platelet count (cells/microL)", FieldPattern.INTEGER, 100, 450), //C8
+  PLATELET_COUNT_X10_3_UL_ON_PLAVIX("Platelet count (cells/microL) on Plavix", FieldPattern.INTEGER, 100, 450), //C8
   PRAVASTATIN_PRAVACHOL("Pravastatin (Pravachol)", FieldPattern.YESNONA), //W2
   PRIOR_CORONARY_ARTERY_BYPASS_GRAFTING_CABG("Prior Coronary artery bypass grafting (CABG)", FieldPattern.YESNONA), //C1
   PRIOR_MI("Prior MI", FieldPattern.YESNONA), //C1
@@ -172,8 +172,8 @@ public enum Field {
   PROJECT_SITE("Project site", "^NU|UIC|UofC|DCVA|GWU$"), //C1, N1, W1
   PROTON_PUMP_INHIBITORS_PPIS("Proton Pump Inhibitors (PPIs)", "([YN123456]|MD)"), //C2
   PROTON_PUMP_INHIBITORS_PPIS_NAMES("Proton Pump Inhibitors (PPIs)", FieldPattern.ANY), //C2
-  RED_CELL_COUNT_CELLS_MICROL("Red cell count (cells/microL)", FieldPattern.DECIMAL, 3, 7), //C8
-  RED_CELL_COUNT_CELLS_MICROL_ON_PLAVIX("Red cell count (cells/microL) on Plavix", FieldPattern.DECIMAL, 3, 7), //C8
+  RED_CELL_COUNT_X10_6_CELLS_UL("Red cell count (cells/microL)", FieldPattern.DECIMAL, 3, 7), //C8
+  RED_CELL_COUNT_X10_6_CELLS_UL_ON_PLAVIX("Red cell count (cells/microL) on Plavix", FieldPattern.DECIMAL, 3, 7), //C8
   RIFAMPIN("Rifampin", FieldPattern.YESNONA), //C2
   RIFAMPIN_OR_RIFAMPICIN("Rifampin or Rifampicin", FieldPattern.YESNONA), //W2
   RITONAVIR("Ritonavir", FieldPattern.YESNONA), //C2
