@@ -26,6 +26,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.pharmgkb.account.data.FieldPattern.MISSING_DATA;
 import static org.pharmgkb.account.data.FieldPattern.isMissing;
@@ -213,7 +214,15 @@ public abstract class AbstractDataFile {
       fieldBag.add(field);
     }
 
-    return cells;
+    return cells.stream()
+        .map(c -> {
+          if (FieldPattern.isMissing(c)) {
+            return MISSING_DATA;
+          } else {
+            return c;
+          }
+        })
+        .collect(Collectors.toList());
   }
 
   private String getRecordValue(@Nonnull CSVRecord record, @Nonnull Field field) {
