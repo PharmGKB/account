@@ -384,7 +384,7 @@ public abstract class AbstractDataFile {
       LocalDateTime drawStamp = org.pharmgkb.account.DateUtils.parseDateTime(drawDate, drawTime);
       return Optional.of(org.pharmgkb.account.DateUtils.diff(doseStamp, drawStamp));
     } catch (DateTimeParseException ex) {
-      sf_logger.warn("Could not parse DateTime", ex);
+      sf_logger.warn("Could not parse DateTime for " + record.get(0), ex);
       return Optional.empty();
     }
   }

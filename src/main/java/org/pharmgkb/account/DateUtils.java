@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
  * @author Ryan Whaley
  */
 public class DateUtils {
-  private static final DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ofPattern("M-d-yyyy h:mm a");
+  private static final DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ofPattern("M-d-yyyy h:mm[ ]a");
 
   /**
    * Parses a string represented date and time into one {@link LocalDateTime} object with all the assumptions about how
