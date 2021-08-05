@@ -201,7 +201,7 @@ public enum Field {
   VALVE_REPLACEMENT("Valve Replacement", FieldPattern.YESNONA), //W1
   VARIOUS_CHOLESTEROL_MEASUREMENT_TOTAL_LDL_HDL_ETC_REQUIRED("Various cholesterol measurement (total, LDL, HDL, etc.) (Required)", FieldPattern.YESNONA), //C8
   VERIFYNOW_ADP_STIMULATED_AGGREGATION_WHILE_ON_MAINTENANCE_DOSE_OF_CLOPIDOGREL_INHIBITION("VerifyNow ADP stimulated Aggregation (while on maintenance dose of Clopidogrel) % Inhibition", FieldPattern.DECIMAL, 0, 100), //C8
-  VERIFYNOW_ADP_STIMULATED_AGGREGATION_WHILE_ON_MAINTENANCE_DOSE_OF_CLOPIDOGREL_PRU("VerifyNow ADP stimulated Aggregation (while on maintenance dose of Clopidogrel) PRU", FieldPattern.INTEGER, 0, 400), //C8
+  VERIFYNOW_ADP_STIMULATED_AGGREGATION_WHILE_ON_MAINTENANCE_DOSE_OF_CLOPIDOGREL_PRU("VerifyNow ADP stimulated Aggregation (while on maintenance dose of Clopidogrel) PRU", FieldPattern.DECIMAL, 0, 400), //C8
   VESSEL_DISEASE_50_STENOSIS("Vessel Disease (> 50% stenosis)", "^([1234]|MD)$"), //C1
   VORICONAZOLE("Voriconazole", FieldPattern.YESNONA), //C2
   WARFARIN("Warfarin", FieldPattern.YESNONA), //C2
